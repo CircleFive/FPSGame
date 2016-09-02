@@ -19,14 +19,15 @@ public class score : MonoBehaviour {
 
         textBox = (GameObject)Resources.Load("Prefabs/BigClystal");
          //scoreText = textBox.GetComponent<Text>();
-        Debug.Log("score:" + scoreText.text);
+        //Debug.Log("score:" + scoreText.text);
         // 初期のスコア表示
         scoreText.text = "スコア：0-0";
 
     }
 
     void Update () {
-        objectHp playerPoint = textBox.GetComponent<objectHp>();
+        //objectHp playerPoint = textBox.GetComponent<objectHp>();
+        ObjDestroy playerPoint = textBox.GetComponent<ObjDestroy>();
         // Debug.Log("player1:" + playerPoint.player1Point);
         // Debug.Log("player2:" + playerPoint.player2Point);
         Debug.Log("player1Point:" + playerPoint.Player1Point);
