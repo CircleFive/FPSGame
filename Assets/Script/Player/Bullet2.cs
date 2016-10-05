@@ -33,7 +33,7 @@ public class Bullet2 : MonoBehaviour {
     {
 
 
-        if (Input.GetKey(KeyCode.H))
+        if (Input.GetButtonDown("Fire1_2"))
         {
             Shot();
 

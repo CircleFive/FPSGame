@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour {
 	void FixedUpdate () {
 
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1_1"))
         {
             Shot();
             
@@ -70,6 +70,7 @@ public class Bullet : MonoBehaviour {
             kk.p2Death();
             Destroy(other.gameObject);
         }
+
     }
 
 }
