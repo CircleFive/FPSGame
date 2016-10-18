@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Bullet : MonoBehaviour {
 
@@ -15,52 +16,68 @@ public class Bullet : MonoBehaviour {
 
     private int gun_num;
 
-    private int BULLET = 1;
+    public int BULLET = 5;
+
+    int bullets = 5;
 
     killDeath kk;
+    blueGage BG;
+    [SerializeField]
+    private GameObject blue;
+
+    private AudioSource audioSource;    // AudioSorceコンポーネント格納用
+    [SerializeField]
+    private AudioClip sound;        // 効果音の格納用。インスペクタで。
 
     //private int bulletNumber = 3;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         kk = GetComponent<killDeath>();
-        gun_num = BULLET;
-	}
+        if (SceneManager.GetActiveScene().name == "Game")
+        {
+            BG = blue.GetComponent<blueGage>();
+            audioSource = gameObject.GetComponent<AudioSource>();
+            audioSource.loop = false;
+            //gun_num = BG.b_Bullet;
+        }
+    }
 	
 	// Update is called once per frame
-	void FixedUpdate () {
-
-
-        if (Input.GetButtonDown("Fire1_1"))
-        {
-            Shot();
+	//void FixedUpdate () {
+ //       //Debug.Log(BG.b_Bullet);
+ //       //if (Input.GetButtonDown("Fire1_1"))
+ //       //{
+ //       //    Shot();
             
-        }      
+ //       //}      
 
-	}
+	//}
 
-    void Shot()
+    public void Shot(int bb)
     {
-        if (gun_num == 0) { return; }
 
+
+        if (bb == 0) { return; }
         GameObject bullets = GameObject.Instantiate(bullet) as GameObject;
         bullets.transform.position = m_muzzle.position;
         bullets.transform.rotation = m_muzzle.rotation;
         Vector3 m_force;
         m_force = this.gameObject.transform.forward * m_speed;
         bullets.GetComponent<Rigidbody>().AddForce(m_force);
-
-        gun_num--;
-        if (gun_num == 0) { StartCoroutine("reChargeGun"); }
+        audioSource.PlayOneShot(sound);
+        //gun_num--;
+        //if (gun_num == 0) { StartCoroutine("reChargeGun"); }
         Destroy(bullets,3);
        
     }
 
-    IEnumerator reChargeGun()
-    {
-        yield return new WaitForSeconds(3.0f);      // 3秒、処理を待機.
-        gun_num = BULLET;                      // 銃弾装填.
-    }
+    //IEnumerator reChargeGun()
+    //{
+    //    yield return new WaitForSeconds(2.0f);      // 3秒、処理を待機.
+    //    gun_num = BULLET;                      // 銃弾装填.
+    //}
 
     void OnTriggerEnter(Collider other)
     {
