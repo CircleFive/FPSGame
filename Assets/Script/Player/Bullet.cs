@@ -21,7 +21,6 @@ public class Bullet : MonoBehaviour {
     int bullets = 5;
 
     killDeath kk;
-    blueGage BG;
     [SerializeField]
     private GameObject blue;
 
@@ -37,10 +36,8 @@ public class Bullet : MonoBehaviour {
         kk = GetComponent<killDeath>();
         if (SceneManager.GetActiveScene().name == "Game")
         {
-            BG = blue.GetComponent<blueGage>();
             audioSource = gameObject.GetComponent<AudioSource>();
             audioSource.loop = false;
-            //gun_num = BG.b_Bullet;
         }
     }
 	

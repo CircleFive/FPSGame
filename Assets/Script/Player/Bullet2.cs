@@ -19,7 +19,6 @@ public class Bullet2 : MonoBehaviour {
     private int BULLET = 1;
 
     killDeath kk;
-    redGage RG;
     [SerializeField]
     private GameObject red;
 
@@ -38,7 +37,6 @@ public class Bullet2 : MonoBehaviour {
         kk = GetComponent<killDeath>();
         if (SceneManager.GetActiveScene().name == "Game")
         {
-            RG = red.GetComponent<redGage>();
             //gun_num = BULLET;
             audioSource = gameObject.GetComponent<AudioSource>();
             audioSource.loop = false;
