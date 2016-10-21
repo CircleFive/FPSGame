@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Bullet2 : MonoBehaviour {
 
@@ -18,6 +19,16 @@ public class Bullet2 : MonoBehaviour {
     private int BULLET = 1;
 
     killDeath kk;
+    redGage RG;
+    [SerializeField]
+    private GameObject red;
+
+
+
+    private AudioSource audioSource;    // AudioSorceコンポーネント格納用
+    [SerializeField]
+    private AudioClip sound;        // 効果音の格納用。インスペクタで。
+
 
     //private int bulletNumber = 3;
 
@@ -25,7 +36,16 @@ public class Bullet2 : MonoBehaviour {
     void Start()
     {
         kk = GetComponent<killDeath>();
-        gun_num = BULLET;
+        audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.loop = false;
+        if (SceneManager.GetActiveScene().name == "Game")
+        {
+            RG = red.GetComponent<redGage>();
+            //gun_num = BULLET;
+        }
+        if (SceneManager.GetActiveScene().name == "Title")
+            gun_num = BULLET;
+
     }
 
     // Update is called once per frame
@@ -33,27 +53,46 @@ public class Bullet2 : MonoBehaviour {
     {
 
 
-        if (Input.GetButtonDown("Fire1_2"))
+        if (Input.GetButtonDown("Fire1_1") && SceneManager.GetActiveScene().name == "Title")
         {
-            Shot();
+            t_Shot();
 
         }
 
     }
 
-    void Shot()
+    void t_Shot()
     {
-        if (gun_num == 0) { return; }
 
+
+        if (gun_num == 0) { return; }
         GameObject bullets = GameObject.Instantiate(bullet) as GameObject;
         bullets.transform.position = m_muzzle.position;
         bullets.transform.rotation = m_muzzle.rotation;
         Vector3 m_force;
         m_force = this.gameObject.transform.forward * m_speed;
         bullets.GetComponent<Rigidbody>().AddForce(m_force);
-
+        audioSource.PlayOneShot(sound);
         gun_num--;
         if (gun_num == 0) { StartCoroutine("reChargeGun"); }
+        Destroy(bullets, 3);
+
+    }
+    public void Shot(int rb)
+    {
+
+
+        if (rb == 0) { return; }
+        GameObject bullets = GameObject.Instantiate(bullet) as GameObject;
+        bullets.transform.position = m_muzzle.position;
+        bullets.transform.rotation = m_muzzle.rotation;
+        Vector3 m_force;
+        m_force = this.gameObject.transform.forward * m_speed;
+        bullets.GetComponent<Rigidbody>().AddForce(m_force);
+        audioSource.PlayOneShot(sound);
+
+        //gun_num--;
+        //if (gun_num == 0) { StartCoroutine("reChargeGun"); }
         Destroy(bullets, 3);
 
     }
