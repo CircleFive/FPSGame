@@ -7,6 +7,7 @@ public class ObjDestroy : MonoBehaviour {
     private int BigClystal = 3;
 
 
+    risporn rpr;
 
     // ポイント加点
     [SerializeField]
@@ -26,12 +27,73 @@ public class ObjDestroy : MonoBehaviour {
     }
 
 
+
+    [SerializeField]
+    static private int player1Kill; // Player1が獲得したポイント
+    [SerializeField]
+    static private int player2Kill; // Player2が獲得したポイント
+
+
+    private AudioSource audioSource;    // AudioSorceコンポーネント格納用
+    [SerializeField]
+    private AudioClip sound;        // 効果音の格納用。インスペクタで。
+
+
+
+    public int Player1Kill
+    {
+        get { return player1Kill; }
+        set { player1Kill = value; }
+    }
+    public int Player2Kill
+    {
+        get { return player2Kill; }
+        set { player2Kill = value; }
+    }
+
+
+    void Start()
+    {
+        audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.loop = false;
+        rpr = this.GetComponent<risporn>();
+    }
+
+
+    public string result()
+    {
+        if (Player1Point + Player1Kill - Player2Kill == Player2Point + Player2Kill - Player1Kill)
+        {
+            return "DRAW";
+        }
+        else
+        {
+            return "VICTORY";
+        }
+
+    }
+
+    public int po1()
+    {
+        return player1Point;
+    }
+    public int po2()
+    {
+        return player2Point;
+    }
+
+
+
+
+
+
+
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("run");
+
         if (other.gameObject.name == "bullet(Clone)" && this.tag == "BigClystal")
         {
-            Debug.Log("BC:Hit");
+
 
             BigClystal--;
             if (BigClystal == 0)
@@ -43,10 +105,51 @@ public class ObjDestroy : MonoBehaviour {
 
         if (other.gameObject.name == "bullet(Clone)" && this.tag == "Clystal")
         {
-            Debug.Log("C:Hit");
+
             player1Point += 1;
             Destroy(gameObject);
         }
+
+        // プレイヤー2
+        if (other.gameObject.name == "bullet2(Clone)" && this.tag == "BigClystal")
+        {
+
+            BigClystal--;
+            if (BigClystal == 0)
+            {
+                player1Point += 3;
+                Destroy(gameObject);
+            }
+        }
+
+        if (other.gameObject.name == "bullet2(Clone)" && this.tag == "Clystal")
+        {
+            player1Point += 1;
+            Destroy(gameObject);
+        }
+
+        // playerのKill、Death
+        if (other.gameObject.name == "bullet2(Clone)" && this.tag == "Player1")
+        {
+            player2Kill += 1;
+            audioSource.PlayOneShot(sound);
+            rpr.GetComponent<risporn>().ris_p = true;
+        }
+        if (other.gameObject.name == "bullet(Clone)" && this.tag == "Player2")
+        {
+            player1Kill += 1;
+            audioSource.PlayOneShot(sound);
+            rpr.GetComponent<risporn>().ris_p = true;
+        }
+
+    }
+    public int p1_kill()
+    {
+        return player1Kill;
+    }
+    public int p2_kill()
+    {
+        return player2Kill;
     }
 
 }
