@@ -21,6 +21,7 @@ public class Bullet : MonoBehaviour {
     int bullets = 5;
 
     killDeath kk;
+    blueGage BG;
     [SerializeField]
     private GameObject blue;
 
@@ -34,23 +35,27 @@ public class Bullet : MonoBehaviour {
     void Start()
     {
         kk = GetComponent<killDeath>();
+        audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.loop = false;
         if (SceneManager.GetActiveScene().name == "Game")
         {
-            audioSource = gameObject.GetComponent<AudioSource>();
-            audioSource.loop = false;
-        }
-    }
-	
-	// Update is called once per frame
-	//void FixedUpdate () {
- //       //Debug.Log(BG.b_Bullet);
- //       //if (Input.GetButtonDown("Fire1_1"))
- //       //{
- //       //    Shot();
-            
- //       //}      
+            BG = blue.GetComponent<blueGage>();
 
-	//}
+        }
+        if (SceneManager.GetActiveScene().name == "Title")
+            gun_num = BULLET;
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        if (Input.GetButtonDown("Fire1_1") && SceneManager.GetActiveScene().name == "Title")
+        {
+            t_Shot();
+
+        }
+
+    }
 
     public void Shot(int bb)
     {
@@ -69,22 +74,39 @@ public class Bullet : MonoBehaviour {
         Destroy(bullets,3);
        
     }
-
-    //IEnumerator reChargeGun()
-    //{
-    //    yield return new WaitForSeconds(2.0f);      // 3秒、処理を待機.
-    //    gun_num = BULLET;                      // 銃弾装填.
-    //}
-
-    void OnTriggerEnter(Collider other)
+    void t_Shot()
     {
-        if (other.tag == "Player2")
-        {
-            Debug.Log("Player2Death");
-            kk.p2Death();
-            Destroy(other.gameObject);
-        }
+
+
+        if (gun_num == 0) { return; }
+        GameObject bullets = GameObject.Instantiate(bullet) as GameObject;
+        bullets.transform.position = m_muzzle.position;
+        bullets.transform.rotation = m_muzzle.rotation;
+        Vector3 m_force;
+        m_force = this.gameObject.transform.forward * m_speed;
+        bullets.GetComponent<Rigidbody>().AddForce(m_force);
+        audioSource.PlayOneShot(sound);
+        gun_num--;
+        if (gun_num == 0) { StartCoroutine("reChargeGun"); }
+        Destroy(bullets, 3);
 
     }
+
+    IEnumerator reChargeGun()
+    {
+        yield return new WaitForSeconds(2.0f);      // 3秒、処理を待機.
+        gun_num = BULLET;                      // 銃弾装填.
+    }
+
+    //void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.tag == "Player2")
+    //    {
+    //        Debug.Log("Player2Death");
+    //        kk.p2Death();
+    //        Destroy(other.gameObject);
+    //    }
+
+    //}
 
 }

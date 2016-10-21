@@ -6,58 +6,57 @@ public class risporn : MonoBehaviour
 
 
     private GameObject objP;
-    private GameObject player;
     private GameObject player1;
     private GameObject player2;
     private GameObject obj;
 
-    private GameObject C;
+    [SerializeField]
+    private GameObject[] points;
+
+    private Transform[] trans;
+
+    public bool ris_p = false;
 
     // 修正　リスポーン位置
-    float[] rispornX = {  -3.5f, 0, 3.5f, 4,  3.5f,  0, -3.5f, -4};
-    float   rispornY = 0.5f;
-    float[] rispornZ = {   3.5f, 4, 3.5f, 0, -3.5f, -4, -3.5f,  0};
+    float[] rispornX = { -3.5f, 0, 3.5f, 4, 3.5f, 0, -3.5f, -4 };
+    float rispornY = 0.5f;
+    float[] rispornZ = { 3.5f, 4, 3.5f, 0, -3.5f, -4, -3.5f, 0 };
 
     int nomber;
     float posX;
     float posZ;
 
-    float speed = 5f;
-
-    [SerializeField]
-    private GameObject bullet;
 
     float r_time;
 
     bool risOr = false;
 
+
+    //void limit()
+    //{
+    //    for (int i = 0; i < points.Length; i++)
+    //    {
+
+    //        trans[i] = points[i].transform;
+    //        //trans[i] = points[i].transform;
+    //    }
+
+    //}
+
+
     // Use this for initialization
     void Start()
     {
-        //objP = (GameObject)Resources.Load("Prefabs/Player");
-        //if (GameObject.FindGameObjectsWithTag("Player").Length < 2)
-        //{
-        //    player1 = (GameObject)Instantiate(objP, transform.position, transform.rotation);
-        //}
-        //player1.name = "Player1";
-
-
-        //if (GameObject.FindGameObjectsWithTag("Player").Length < 2)
-        //{
-        //    player2 = (GameObject)Instantiate(objP, transform.position, transform.rotation);
-        //}
-        //player2.name = "Player2";
 
         player1 = GameObject.Find("Player1");
         player2 = GameObject.Find("Player2");
 
-
-        player = this.gameObject;
-
-        obj = player;
-
+        obj = this.gameObject;
+        
         obj.AddComponent<MeshRenderer>();
-        obj.AddComponent<SphereCollider>();
+        obj.AddComponent<CapsuleCollider>();
+
+        //Invoke("limit", 1f);
 
     }
 
@@ -65,18 +64,19 @@ public class risporn : MonoBehaviour
     void Update()
     {
 
-        if (this.transform.position.x - bullet.transform.position.x < 1f && this.transform.position.x - bullet.transform.position.x > -1f
-    && this.transform.position.z - bullet.transform.position.z < 1f && this.transform.position.z - bullet.transform.position.z > -1f)
-        {
-            hitPlayer();
-            risOr = true;
-            ris1();
-        }
 
-        if (risOr)
-        {
-            ris1();
-        }
+        //    if (player1.transform.position.x - player2.transform.position.x < 1f && player1.transform.position.x - player2.transform.position.x > -1f
+        //&& player1.transform.position.z - player2.transform.position.z < 1f && player1.transform.position.z - player2.transform.position.z > -1f)
+        //    {
+        //        hitPlayer();
+        //        risOr = true;
+        //        ris1();
+        //    }
+
+        //if (risOr)
+        //{
+        //    ris1();
+        //}
 
         //    if (player2.transform.position.x < 1f && player2.transform.position.x > -1f
         //&& player2.transform.position.z < 1f && player2.transform.position.z > -1f)
@@ -89,32 +89,42 @@ public class risporn : MonoBehaviour
         //    }
 
 
+        if(ris_p)
+        ris();
 
+    }
+
+
+    void ris()
+    {
+        int num;
+        num = Random.Range(0, 4);
+
+        obj.transform.position = points[num].transform.position;
+        ris_p = false;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Bullet2")
-        {
-            //Destroy(this.gameObject);
-            hitPlayer();
-            risOr = true;
-            ris1();
-        }
+        hitPlayer();
+        risOr = true;
+        ris1();
+
     }
 
-    public void ris1()
+    void ris1()
     {
+
         nomber = Random.Range(0, 8);
 
         posX = rispornX[nomber];
         posZ = rispornZ[nomber];
 
-        Debug.Log("aaaaaaaa");
+
         if (risTime())
         {
             // 修正　y軸
-            this.transform.position = new Vector3(posX, rispornY, posZ);
+            obj.transform.position = new Vector3(posX, rispornY, posZ);
             activePlayer();
             risOr = false;
         }
@@ -137,9 +147,9 @@ public class risporn : MonoBehaviour
     {
         bool r = false;
         r_time += Time.deltaTime;
-        Debug.Log("aa");
 
-        if (r_time >= 0.1 && risOr == true)
+
+        if (r_time >= 2 && risOr == true)
         {
             r = true;
             r_time = 0;
@@ -151,14 +161,14 @@ public class risporn : MonoBehaviour
 
     void hitPlayer()
     {
-        obj.GetComponent<MeshRenderer>().enabled = false;
-        obj.GetComponent<SphereCollider>().enabled = false;
+        gameObject.GetComponent<MeshRenderer>().enabled = false;
+        gameObject.GetComponent<CapsuleCollider>().enabled = false;
     }
 
     void activePlayer()
     {
-        obj.GetComponent<MeshRenderer>().enabled = true;
-        obj.GetComponent<SphereCollider>().enabled = true;
+        gameObject.GetComponent<MeshRenderer>().enabled = true;
+        gameObject.GetComponent<CapsuleCollider>().enabled = true;
     }
 
 }

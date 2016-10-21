@@ -46,7 +46,7 @@ public class PlayerMove2 : MonoBehaviour {
     {
         //移動処理
         float y = m_move.y;
-        m_move = new Vector3(Input.GetAxis("Horizontar2"), 0, Input.GetAxis("Vertical2"));
+        m_move = new Vector3(Input.GetAxis("Horizontal2"), 0, Input.GetAxis("Vertical2"));
 
 
         m_move = transform.TransformDirection(m_move);

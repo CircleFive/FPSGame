@@ -5,9 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class limitTime : MonoBehaviour {
 
-    float playTime = 2;
     [SerializeField]
-    private Text timeText;
+    private float playTime = 10;
+    [SerializeField]
+    private Text timeText1;
+    [SerializeField]
+    private Text timeText2;
     private GameObject C;
     //[SerializeField]
     //private GameObject canvas;
@@ -26,6 +29,7 @@ public class limitTime : MonoBehaviour {
     public string p2Point;
     public string p1Total;
     public string p2Total;
+    public string textColor;
 
     int t1;
     int t2;
@@ -56,11 +60,13 @@ public class limitTime : MonoBehaviour {
             if (playTime > 0)
                 playTime -= Time.deltaTime;
 
-            timeText.text = playTime.ToString("#.0");
+            timeText1.text = playTime.ToString("#.0");
+            timeText2.text = playTime.ToString("#.0");
             Invoke("limit", 1f);
             if (playTime < 0)
             {
-                timeText.text = "0.0";
+                timeText1.text = "0.0";
+                timeText2.text = "0.0";
                 playTime = 0;
 
                 p1 = p.po1();
@@ -71,8 +77,12 @@ public class limitTime : MonoBehaviour {
 
                 t1 = p1 + k1 - k2;
                 t2 = p2 + k2 - k1;
-                
-                
+
+                if (t1 < 0) t1 = 0;
+                if (t2 < 0) t2 = 0;
+
+                if (t1 > t2) textColor = "red";
+                else if (t1 < t2) textColor = "blue";
 
                 pp = p.result();
                 p1Kill = k1.ToString();
@@ -82,7 +92,7 @@ public class limitTime : MonoBehaviour {
                 p1Total = t1.ToString();
                 p2Total = t2.ToString();
 
-                //SceneManager.LoadScene("result");
+                SceneManager.LoadScene("result");
 
             }
         }

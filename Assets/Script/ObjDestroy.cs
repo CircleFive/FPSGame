@@ -7,6 +7,7 @@ public class ObjDestroy : MonoBehaviour {
     private int BigClystal = 3;
 
 
+    risporn rpr;
 
     // ポイント加点
     [SerializeField]
@@ -51,17 +52,17 @@ public class ObjDestroy : MonoBehaviour {
     }
 
 
-
     void Start()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
         audioSource.loop = false;
+        rpr = this.GetComponent<risporn>();
     }
 
 
     public string result()
     {
-        if (Player1Point == Player2Point)
+        if (Player1Point + Player1Kill - Player2Kill == Player2Point + Player2Kill - Player1Kill)
         {
             return "DRAW";
         }
@@ -80,6 +81,9 @@ public class ObjDestroy : MonoBehaviour {
     {
         return player2Point;
     }
+
+
+
 
 
 
@@ -129,11 +133,13 @@ public class ObjDestroy : MonoBehaviour {
         {
             player2Kill += 1;
             audioSource.PlayOneShot(sound);
+            rpr.GetComponent<risporn>().ris_p = true;
         }
         if (other.gameObject.name == "bullet(Clone)" && this.tag == "Player2")
         {
             player1Kill += 1;
             audioSource.PlayOneShot(sound);
+            rpr.GetComponent<risporn>().ris_p = true;
         }
 
     }
