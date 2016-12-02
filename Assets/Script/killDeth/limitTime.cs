@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class limitTime : MonoBehaviour {
 
     [SerializeField]
-    private float playTime = 10;
+    private float playTime = 180;
     [SerializeField]
     private Text timeText1;
     [SerializeField]
@@ -39,6 +39,9 @@ public class limitTime : MonoBehaviour {
 
     int k1;
     int k2;
+    [SerializeField]
+    private GameObject Manager;
+    private CountStart state;
 
     void limit()
     {
@@ -50,6 +53,7 @@ public class limitTime : MonoBehaviour {
         //Application.LoadLevelAdditive(V_O_D);
         C = (GameObject)Resources.Load("Prefabs/BigClystal");
         DontDestroyOnLoad(this);
+        state = Manager.GetComponent<CountStart>();
         //DontDestroyOnLoad(canvas);
     }
 
@@ -63,7 +67,7 @@ public class limitTime : MonoBehaviour {
             timeText1.text = playTime.ToString("#.0");
             timeText2.text = playTime.ToString("#.0");
             Invoke("limit", 1f);
-            if (playTime < 0)
+            if (playTime <= 0)
             {
                 timeText1.text = "0.0";
                 timeText2.text = "0.0";
@@ -81,18 +85,25 @@ public class limitTime : MonoBehaviour {
                 if (t1 < 0) t1 = 0;
                 if (t2 < 0) t2 = 0;
 
-                if (t1 > t2) textColor = "red";
-                else if (t1 < t2) textColor = "blue";
+                //if (t1 > t2) textColor = "red";
+                //else if (t1 < t2) textColor = "blue";
+                if (t1 > t2) textColor = "p1";
+                else if (t1 < t2) textColor = "p2";
 
                 pp = p.result();
                 p1Kill = k1.ToString();
                 p2Kill = k2.ToString();
-                p1Point = p1.ToString();
-                p2Point = p2.ToString();
-                p1Total = t1.ToString();
-                p2Total = t2.ToString();
+                //p1Point = p1.ToString();
+                //p2Point = p2.ToString();
+                //p1Total = t1.ToString();
+                //p2Total = t2.ToString();
 
-                SceneManager.LoadScene("result");
+                state._GAMESTATE = "GameSet";
+                if (state._GAMESTATE == "ToResult")
+                {
+                    Debug.Log("a");
+                    SceneManager.LoadScene("result");
+                }
 
             }
         }
@@ -101,4 +112,10 @@ public class limitTime : MonoBehaviour {
 
         }
     }
+
+    public void ToRESULT()
+    {
+        SceneManager.LoadScene("result");
+    }
+
 }
