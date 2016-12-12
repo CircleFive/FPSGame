@@ -4,33 +4,71 @@ using UnityEngine.UI;
 
 public class score : MonoBehaviour {
 
-  //  objectHp player1Point;
-  //  objectHp player2Point;
-
+    // 旧バージョン
     // 引っ張てくるためのもの
-    private GameObject textBox;
+    //private GameObject p;
     // スコア表示用
+    //[SerializeField]
+    //private Text scoreText;
+
     [SerializeField]
-    private Text scoreText;
+    private GameObject player;
+    private string p_name;
+
+    [SerializeField]
+    private Text pKill;
+    [SerializeField]
+    private Text pDeath;
+
+    ObjDestroy pKD;
+    private GameObject C;
 
 
+
+    private string p_Kill;
+    private string p_Death;
+    //private string p2KD;
 
     void Start () {
 
-        textBox = (GameObject)Resources.Load("Prefabs/BigClystal");
-         //scoreText = textBox.GetComponent<Text>();
+        /* 旧バージョン
+        //p = GameObject.Find("Player1");
+        //scoreText = textBox.GetComponent<Text>();
         //Debug.Log("score:" + scoreText.text);
         // 初期のスコア表示
         scoreText.text = "スコア：0-0";
+        */
+        p_name = player.name;
+        C = (GameObject)Resources.Load("Prefabs/BigClystal");
+        pKD = C.GetComponent<ObjDestroy>();
 
     }
 
     void Update () {
-        //objectHp playerPoint = textBox.GetComponent<objectHp>();
-        ObjDestroy playerPoint = textBox.GetComponent<ObjDestroy>();
-        // Debug.Log("player1:" + playerPoint.player1Point);
-        // Debug.Log("player2:" + playerPoint.player2Point);
-        Debug.Log("player1Point:" + playerPoint.Player1Point);
-        scoreText.text = "スコア：" + playerPoint.Player1Point + "-" + playerPoint.Player2Point;
+        //ObjDestroy playerPoint = p.GetComponent<ObjDestroy>();
+        //scoreText.text = "スコア：" + playerPoint.Player1Point + "-" + playerPoint.Player2Point;
+        getPoint(p_name);
+        setPoint();
     }
+
+    void getPoint(string name)
+    {
+        if(name == "Player1")
+        {
+            p_Kill = pKD.p1_kill().ToString();
+            p_Death = pKD.p2_kill().ToString();
+        }
+        else if (name == "Player2")
+        {
+            p_Kill = pKD.p2_kill().ToString();
+            p_Death = pKD.p1_kill().ToString();
+        }
+    }
+    void setPoint()
+    {
+         pKill.text = p_Kill;
+         pDeath.text = p_Death;
+    }
+
+
 }

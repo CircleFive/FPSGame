@@ -106,7 +106,7 @@ public class risporn : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        hitPlayer();
+        //hitPlayer();
         risOr = true;
         ris1();
 
@@ -125,7 +125,7 @@ public class risporn : MonoBehaviour
         {
             // 修正　y軸
             obj.transform.position = new Vector3(posX, rispornY, posZ);
-            activePlayer();
+            //activePlayer();
             risOr = false;
         }
     }
@@ -159,16 +159,16 @@ public class risporn : MonoBehaviour
         return r;
     }
 
-    void hitPlayer()
-    {
-        gameObject.GetComponent<MeshRenderer>().enabled = false;
-        gameObject.GetComponent<CapsuleCollider>().enabled = false;
-    }
+    //void hitPlayer()
+    //{
+    //    gameObject.GetComponent<MeshRenderer>().enabled = false;
+    //    gameObject.GetComponent<CapsuleCollider>().enabled = false;
+    //}
 
-    void activePlayer()
-    {
-        gameObject.GetComponent<MeshRenderer>().enabled = true;
-        gameObject.GetComponent<CapsuleCollider>().enabled = true;
-    }
+    //void activePlayer()
+    //{
+    //    gameObject.GetComponent<MeshRenderer>().enabled = true;
+    //    gameObject.GetComponent<CapsuleCollider>().enabled = true;
+    //}
 
 }

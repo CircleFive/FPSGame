@@ -63,7 +63,7 @@ public class PlayerMove2 : MonoBehaviour {
         }
         m_move.y -= GRAVITY * Time.deltaTime;//重力を代入
 
-        m_characterController.Move(m_move * Time.deltaTime);
+        m_characterController.Move(m_move * Time.deltaTime*m_speed);
         m_animator.SetFloat("Speed", m_characterController.velocity.magnitude);
 
     }

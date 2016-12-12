@@ -3,58 +3,78 @@ using System.Collections;
 
 public class FirstPersonCamera : MonoBehaviour {
 
-    private float m_maxAngle = 90.0f;
-    private float m_minAngle = -90.0f;
+    [SerializeField]
+    private GameObject m_mainCamera;
+    [SerializeField]
+    private GameObject m_zoomOutPotision;
+    [SerializeField]
+    private Transform m_zoomInPotision;
 
-    //[SerializeField]
-    //private GameObject m_target;
+    [SerializeField]
+    private Transform m_cameraPotision;     //目線用のカメラ
+    [SerializeField]
+    private GameObject m_gun;               //銃オブジェクト
+    [SerializeField]
+    private Transform m_rightArm;           //PlayerModelの右腕
+    [SerializeField]
+    private Transform m_rightShoulder;
+    [SerializeField]
+    private Transform m_leftArm;            //PlayerModelの左腕
+    [SerializeField]
+    private Transform m_leftShoulder;
 
-    private float m_rotationSpead = 360.0f;
+    [SerializeField]
+    private Transform m_centerPotision;     
+
+    [SerializeField]
+    private GameObject m_reticle;
+
 
     // Use this for initialization
-    private void Awake()
+    private void Start()
     {
-       
         
     }
-
-	void Start () {
-       
-	}
 	
 	// Update is called once per frame
 	void Update () {
-       
-       CameraController();
-	}
+        //常にMainCameraは目線のPotisionにセットされる
+        m_mainCamera.transform.position = m_cameraPotision.position;
 
-  private void CameraController()
-    {
+        if (Input.GetButton("L1button_1"))
+        {
+            
+            if (m_zoomInPotision.position.z > m_cameraPotision.position.z)
+            {
+                m_cameraPotision.position += m_cameraPotision.forward * 0.1f;
+                Debug.Log("Max");
+            }
 
-        ////入力情報
-        //float m_turn = Input.GetAxis("Mouse Y");
-        ////現在の回転角度を0～360から-180～180に変換
-        //float m_rotateY = (transform.eulerAngles.y > 180) ? transform.eulerAngles.y - 360 : transform.eulerAngles.y;
-        ////現在の回転角度に入力(m_turn)を加味した回転角度をMathf.Clamp()を使いm_minAngleからm_maxAngle内に収まるようにする
-        //float m_angleY = Mathf.Clamp(m_rotateY + m_turn, m_minAngle, m_maxAngle);
-        ////回転角度を-180～180から0～360に変換
-        //m_angleY = (m_angleY < 0) ? m_angleY + 360 : m_angleY;
-        ////回転角度をオブジェクトに適用
-        //gameObject.transform.rotation = Quaternion.Euler(m_angleY, 0, 0);
+        }
 
-        ////this.transform.rotation = Quaternion.Euler(Input.GetAxis("Mouse Y"), m_target.transform.localEulerAngles.y, 0);
-        //m_target.transform.rotation = Quaternion.Euler(Input.GetAxis("Mouse Y"), m_target.transform.localEulerAngles.y, 0);
+        if (Input.GetButtonUp("L1button_1"))
+        {
+            m_cameraPotision.position = m_zoomOutPotision.transform.position;
+        }
 
+        RaycastHit m_hit;
 
-        //方向転換
-        Vector3 m_cameraDirection = new Vector3(0.0f, Input.GetAxisRaw("Mouse Y") * 10, 0.0f);
-        m_cameraDirection = transform.TransformDirection(m_cameraDirection);
-        //if (m_cameraDirection.magnitude > 0.1f)
-        //{
-        //    Quaternion m_quaternion = Quaternion.LookRotation(m_cameraDirection);
-        //    transform.rotation = Quaternion.RotateTowards(transform.rotation, m_quaternion, m_rotationSpead * Time.deltaTime);
-        //}
-        transform.Rotate(Input.GetAxis("Mouse Y") * 50 * -1, 0, 0);
+        if (Physics.Raycast(m_cameraPotision.position, m_cameraPotision.forward,out m_hit))
+        {
+            m_gun.transform.LookAt(m_hit.point);
+        }
 
     }
+
+
+    //void LateUpdate()
+    //{
+    //    m_leftArm.LookAt(m_centerPotision);
+    //    m_rightArm.LookAt(m_centerPotision);
+    //    m_rightShoulder.LookAt(m_centerPotision);
+    //    m_leftShoulder.LookAt(m_centerPotision);
+
+    //    m_gun.transform.LookAt(m_centerPotision);
+    //}
+    
 }

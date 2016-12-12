@@ -16,7 +16,7 @@ public class Bullet2 : MonoBehaviour {
 
     private int gun_num;
 
-    private int BULLET = 1;
+    public int BULLET = 5;
 
     killDeath kk;
     redGage RG;
@@ -53,7 +53,7 @@ public class Bullet2 : MonoBehaviour {
     {
 
 
-        if (Input.GetButtonDown("Fire1_1") && SceneManager.GetActiveScene().name == "Title")
+        if (Input.GetButtonDown("Fire1_2") && SceneManager.GetActiveScene().name == "Title")
         {
             t_Shot();
 

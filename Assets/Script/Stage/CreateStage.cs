@@ -226,18 +226,20 @@ public class CreateStage : MonoBehaviour {
         wallTry = (GameObject)Resources.Load("Prefabs/WallSankaku");
         wallCube = (GameObject)Resources.Load("Prefabs/WallCube");
 
+        PhysicMaterial NPM = (PhysicMaterial)Resources.Load("Prehub/New Physic Material");
 
-        GameObject plane;
-        plane = (GameObject)Instantiate(wallCube);
-        plane.transform.localScale = new Vector3(1000, 1, 1000);
+        //GameObject plane;
+        //plane = (GameObject)Instantiate(wallCube);
+        //plane.transform.localScale = new Vector3(1000, 1, 1000);
 
         for(i = 0; i < stage1Scale; i++)
         {
             for (j = 0; j < stage1Scale; j++)
             {
+                GameObject obj;
 
-                GameObject obj = new GameObject("");
-                obj.AddComponent<Renderer>();
+                //GameObject obj = new GameObject();
+                //obj.AddComponent<Renderer>();
 
                 // stage1の番号1
                 if (stage1[i, j] == 1)
@@ -251,7 +253,7 @@ public class CreateStage : MonoBehaviour {
                         obj.tag = "CubeCollapce";
                         obj.transform.parent = this.transform;
                         obj.GetComponent<Renderer>().material.color = Color.white;
-                        obj.AddComponent<BoxCollider>();
+                        obj.AddComponent<BoxCollider>().material = NPM;
 
                         objPosX++;
                     }
@@ -264,9 +266,9 @@ public class CreateStage : MonoBehaviour {
                         obj.transform.position = new Vector3(transform.position.x + objPosX, transform.position.y + stage1posY[i, j], transform.position.z + objPosZ);
                         obj.name = nomber1[i] + nomber2[j];
                         obj.transform.parent = this.transform;
-                        obj.AddComponent<MeshCollider>();
-
                         obj.GetComponent<Renderer>().material.color = Color.white;
+                        obj.AddComponent<MeshCollider>().material = NPM;
+
 
                         objPosX++;
                     }
@@ -281,7 +283,7 @@ public class CreateStage : MonoBehaviour {
                         obj.transform.position = new Vector3((transform.position.x + stage1posX[i, j]) + objPosX, transform.position.y + stage1posY[i, j], (transform.position.z + stage1posZ[i, j]) + objPosZ);
                         obj.name = nomber1[i] + nomber2[j];
                         obj.transform.parent = this.transform;
-                        obj.AddComponent<BoxCollider>();
+                        obj.AddComponent<BoxCollider>().material = NPM;
 
                         objPosX++;
                     }
@@ -294,7 +296,7 @@ public class CreateStage : MonoBehaviour {
                         obj.transform.position = new Vector3((transform.position.x + stage1posX[i, j]) + objPosX, transform.position.y + stage1posY[i, j], (transform.position.z + stage1posZ[i, j]) + objPosZ);
                         obj.name = nomber1[i] + nomber2[j];
                         obj.transform.parent = this.transform;
-                        obj.AddComponent<MeshCollider>();
+                        obj.AddComponent<MeshCollider>().material = NPM;
 
 
                         objPosX += 1f;
@@ -312,7 +314,7 @@ public class CreateStage : MonoBehaviour {
                         obj.tag = "CubeCollapce";
                         obj.transform.parent = this.transform;
                         obj.GetComponent<Renderer>().material.color = Color.white;
-                        obj.AddComponent<BoxCollider>();
+                        obj.AddComponent<BoxCollider>().material = NPM;
 
                         objPosX++;
                     }
@@ -328,7 +330,7 @@ public class CreateStage : MonoBehaviour {
                         obj.GetComponent<Renderer>().material.color = Color.white;
 
                         obj.transform.parent = this.transform;
-                        obj.AddComponent<MeshCollider>();
+                        obj.AddComponent<MeshCollider>().material = NPM;
 
                         objPosX += 1f;
                     }
@@ -343,7 +345,7 @@ public class CreateStage : MonoBehaviour {
                         obj.transform.position = new Vector3((transform.position.x + stage1posX[i, j]) + objPosX, transform.position.y + stage1posY[i, j], (transform.position.z + stage1posZ[i, j]) + objPosZ);
                         obj.name = nomber1[i] + nomber2[j];
                         obj.transform.parent = this.transform;
-                        obj.AddComponent<BoxCollider>();
+                        obj.AddComponent<BoxCollider>().material = NPM;
 
                         objPosX++;
                     }
@@ -356,7 +358,7 @@ public class CreateStage : MonoBehaviour {
                         obj.transform.position = new Vector3((transform.position.x + stage1posX[i, j]) + objPosX, transform.position.y + stage1posY[i, j], (transform.position.z + stage1posZ[i, j]) + objPosZ);
                         obj.name = nomber1[i] + nomber2[j];
                         obj.transform.parent = this.transform;
-                        obj.AddComponent<MeshCollider>();
+                        obj.AddComponent<MeshCollider>().material = NPM;
 
                         objPosX += 1f;
                     }
@@ -371,7 +373,7 @@ public class CreateStage : MonoBehaviour {
                         obj.transform.position = new Vector3((transform.position.x + stage1posX[i, j]) + objPosX, transform.position.y + stage1posY[i, j], (transform.position.z + stage1posZ[i, j]) + objPosZ);
                         obj.name = nomber1[i] + nomber2[j];
                         obj.transform.parent = this.transform;
-                        obj.AddComponent<BoxCollider>();
+                        obj.AddComponent<BoxCollider>().material = NPM;
 
                         objPosX++;
                     }
@@ -386,7 +388,7 @@ public class CreateStage : MonoBehaviour {
                         obj.transform.position = new Vector3((transform.position.x + stage1posX[i, j]) + objPosX, transform.position.y + stage1posY[i, j], (transform.position.z + stage1posZ[i, j]) + objPosZ);
                         obj.name = nomber1[i] + nomber2[j];
                         obj.transform.parent = this.transform;
-                        obj.AddComponent<BoxCollider>();
+                        obj.AddComponent<BoxCollider>().material = NPM;
 
                         objPosX++;
                     }

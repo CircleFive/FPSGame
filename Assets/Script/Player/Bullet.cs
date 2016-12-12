@@ -16,9 +16,11 @@ public class Bullet : MonoBehaviour {
 
     private int gun_num;
 
-    public int BULLET = 5;
+    private int BULLET = 5;
 
-    int bullets = 5;
+    private int bullets = 5;
+
+
 
     killDeath kk;
     blueGage BG;
@@ -66,13 +68,11 @@ public class Bullet : MonoBehaviour {
         bullets.transform.position = m_muzzle.position;
         bullets.transform.rotation = m_muzzle.rotation;
         Vector3 m_force;
-        m_force = this.gameObject.transform.forward * m_speed;
+        m_force = m_muzzle.forward * m_speed;
         bullets.GetComponent<Rigidbody>().AddForce(m_force);
         audioSource.PlayOneShot(sound);
-        //gun_num--;
-        //if (gun_num == 0) { StartCoroutine("reChargeGun"); }
         Destroy(bullets,3);
-       
+        Debug.Log(bullets.transform.position);
     }
     void t_Shot()
     {
@@ -94,7 +94,7 @@ public class Bullet : MonoBehaviour {
 
     IEnumerator reChargeGun()
     {
-        yield return new WaitForSeconds(2.0f);      // 3秒、処理を待機.
+        yield return new WaitForSeconds(2.0f);      // 2秒、処理を待機.
         gun_num = BULLET;                      // 銃弾装填.
     }
 
