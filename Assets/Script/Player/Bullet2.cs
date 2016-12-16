@@ -53,7 +53,7 @@ public class Bullet2 : MonoBehaviour {
     {
 
 
-        if (Input.GetButtonDown("Fire1_1") && SceneManager.GetActiveScene().name == "Title")
+        if (Input.GetButtonDown("Fire1_2") && SceneManager.GetActiveScene().name == "Title")
         {
             t_Shot();
 
@@ -104,13 +104,13 @@ public class Bullet2 : MonoBehaviour {
     }
 
 
-    //void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.tag == "Player1")
-    //    {
-    //        Debug.Log("Player1Death");
-    //        kk.p1Death();
-    //        Destroy(other.gameObject);
-    //    }
-    //}
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player1")
+        {
+            Debug.Log("Player1Death");
+            kk.p1Death();
+            Destroy(other.gameObject);
+        }
+    }
 }

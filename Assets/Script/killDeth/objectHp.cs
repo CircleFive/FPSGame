@@ -6,8 +6,8 @@ public class objectHp : MonoBehaviour
     // オブジェクト
     private GameObject player1;
     private GameObject player2;
-    private GameObject cube;
-    private GameObject bigCube;
+    private GameObject clystal;
+    private GameObject bigClystal;
 
     // Cubeの耐久力
     int bigCubeHp = 3;
@@ -34,23 +34,33 @@ public class objectHp : MonoBehaviour
     }
 
 
-    // Player二人とCubeの位置確認の変数
-    Vector3 player1Pos1;    // BigCube
-    Vector3 player1Pos2;    // Cube
+    //[SerializeField]
+    //private GameObject bullet1;
+    //[SerializeField]
+    //private GameObject bullet2;
 
-    Vector3 player2Pos1;    // BigCube
-    Vector3 player2Pos2;    // Cube
+
+    public GameObject bullet1;
+    public GameObject bullet2;
+
+
+    // Player二人とCubeの位置確認の変数
+    public Vector3 bullet1Pos1;    // BigCube
+    public Vector3 bullet1Pos2;    // Cube
+
+    public Vector3 bullet2Pos1;    // BigCube
+    public Vector3 bullet2Pos2;    // Cube
 
 
     void Start()
     {
         // Resourcesフォルダにあるプレハブを代入
-        cube = (GameObject)Resources.Load("Prefabs/Clystal");
-        bigCube = (GameObject)Resources.Load("Prefabs/BigClystal");
+        clystal = (GameObject)Resources.Load("Prefabs/Clystal");
+        bigClystal = (GameObject)Resources.Load("Prefabs/BigClystal");
 
         // Hierarchyにあるプレイヤーを代入
-        player1 = GameObject.Find("Player1");
-        player2 = GameObject.Find("Player2");
+        //player1 = GameObject.Find("Player1");
+        //player2 = GameObject.Find("Player2");
 
     }
 
@@ -58,43 +68,52 @@ public class objectHp : MonoBehaviour
     {
         /// PlayerとCubeの距離を代入
         // player1
-        player1Pos1 = player1.transform.position - this.transform.position;
-        player1Pos2 = player1.transform.position - this.transform.position;
+
+        if (bullet1 == null || bullet2 == null) {
+            return;
+        }
+        bullet1Pos1 = bullet1.transform.position - this.transform.position;
+        bullet1Pos2 = bullet1.transform.position - this.transform.position;
         // player2
-        player2Pos1 = player2.transform.position - this.transform.position;
-        player2Pos2 = player2.transform.position - this.transform.position;
+        bullet2Pos1 = bullet2.transform.position - this.transform.position;
+        bullet2Pos2 = bullet2.transform.position - this.transform.position;
 
 
         // BigCubeが無い場合は無視
-        if (GameObject.FindGameObjectsWithTag("BigCube").Length > 0)
+        if (GameObject.FindGameObjectsWithTag("BigClystal").Length > 0)
         {
             // Player1とCubeの距離を確認しHPを減らして0になれば消去。ポイントの加点
-            if (player1.tag == "Player1")
-            {
-                if (bigCube.tag == this.tag && player1Pos1.x < 1.55f && player1Pos1.x > -1.55f
-                    && player1Pos1.z < 1.55f && player1Pos1.z > -1.55f)
+            //if (bullet1.tag == "bullet")
+            //{
+                //Debug.Log("当たり"+bullet1Pos1);
+                if (bigClystal.tag == this.tag &&  bullet1Pos1.x < 1.55f && bullet1Pos1.x > -1.55f
+                    && bullet1Pos1.z < 1.55f && bullet1Pos1.z > -1.55f)
                 {
-                    bigCubeHp--;
-                    player1.transform.position = new Vector3(3.5f, 0.6f, 0);
+
+
+                bigCubeHp--;
+                    //player1.transform.position = new Vector3(3.5f, 0.6f, 0);
                     if (bigCubeHp == 0)
                     {
-                        //pointSet(player1Point, bigCubePoint);
-                        player1Point += bigCubePoint;
+                    Debug.Log("point");
+                    //pointSet(player1Point, bigCubePoint);
+                    player1Point += bigCubePoint;
                         Destroy(this.gameObject);
                     }
                 }
-            }
+            //}
 
             // Player2とCubeの距離を確認しHPを減らして0になれば消去。ポイントの加点             
-            if (player2.tag == "Player2")
+            if (bullet2.tag == "bullet")
             {
-                if (bigCube.tag == this.tag && player2Pos1.x < 1.55f && player2Pos1.x > -1.55f
-                && player2Pos1.z < 1.55f && player2Pos1.z > -1.55f)
+                if (bigClystal.tag == this.tag && bullet2Pos1.x < 1.55f && bullet2Pos1.x > -1.55f
+                && bullet2Pos1.z < 1.55f && bullet2Pos1.z > -1.55f)
                 {
                     bigCubeHp--;
-                    player2.transform.position = new Vector3(3.5f, 0.6f, 0);
+                    //player2.transform.position = new Vector3(3.5f, 0.6f, 0);
                     if (bigCubeHp == 0)
                     {
+                        Debug.Log("point");
                         //  pointSet(player2Point, bigCubePoint);
                         player2Point += bigCubePoint;
 
@@ -106,17 +125,18 @@ public class objectHp : MonoBehaviour
 
 
         // Cubeが無い場合は無視
-        if (GameObject.FindGameObjectsWithTag("Cube").Length > 0)
+        if (GameObject.FindGameObjectsWithTag("Clystal").Length > 0)
         {
-            if (player1.tag == "Player1")
+            if (bullet1.tag == "bullet")
             {
-                if (cube.tag == this.tag && player1Pos2.x < 1f && player1Pos2.x > -1f
-                    && player1Pos2.z < 1f && player1Pos2.z > -1f)
+                if (clystal.tag == this.tag && bullet1Pos2.x < 1f && bullet1Pos2.x > -1f
+                    && bullet1Pos2.z < 1f && bullet1Pos2.z > -1f)
                 {
                     cubeHp--;
-                    player1.transform.position = new Vector3(3.5f, 0.6f, 0);
+                    //player1.transform.position = new Vector3(3.5f, 0.6f, 0);
                     if (cubeHp == 0)
                     {
+                        Debug.Log("point");
                         //   pointSet(player1Point, cubePoint);
                         player1Point += cubePoint;
                         Destroy(this.gameObject);
@@ -124,15 +144,17 @@ public class objectHp : MonoBehaviour
                 }
             }
 
-            if (player2.tag == "Player2")
+            if (bullet2.tag == "bullet")
             {
-                if (cube.tag == this.tag && player2Pos2.x < 1f && player2Pos2.x > -1f
-                    && player2Pos2.z < 1f && player2Pos2.z > -1f)
+                if (clystal.tag == this.tag && bullet2Pos2.x < 1f && bullet2Pos2.x > -1f
+                    && bullet2Pos2.z < 1f && bullet2Pos2.z > -1f)
                 {
                     cubeHp--;
-                    player2.transform.position = new Vector3(3.5f, 0.6f, 0);
+                    //player2.transform.position = new Vector3(3.5f, 0.6f, 0);
                     if (cubeHp == 0)
                     {
+                        Debug.Log("point");
+
                         //pointSet(player2Point, cubePoint);
                         player2Point += cubePoint;
                         Destroy(this.gameObject);
@@ -143,20 +165,19 @@ public class objectHp : MonoBehaviour
     }
 
 
-
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Bullet")
         {
-                bigCubeHp--;
-              
-                if (bigCubeHp == 0)
-                {
-                    //pointSet(player1Point, bigCubePoint);
-                    player1Point += bigCubePoint;
-                    Destroy(this.gameObject);
-                }
-            
+            bigCubeHp--;
+
+            if (bigCubeHp == 0)
+            {
+                //pointSet(player1Point, bigCubePoint);
+                player1Point += bigCubePoint;
+                Destroy(this.gameObject);
+            }
+
         }
 
         // Player2とCubeの距離を確認しHPを減らして0になれば消去。ポイントの加点             

@@ -57,13 +57,22 @@ public class ObjDestroy : MonoBehaviour {
     private damage p_damage;
 
 
+
+    private PlayerMove _pm1;
+    private PlayerMove2 _pm2;
+
+
     void Start()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
         audioSource.loop = false;
         rpr = this.GetComponent<risporn>();
 
+
+
         p_damage = damageEfect.GetComponent<damage>();
+        if (this.name == "Player1") { _pm1 = this.gameObject.GetComponent<PlayerMove>(); Player1Kill = 0; }
+        if (this.name == "Player2") { _pm2 = this.gameObject.GetComponent<PlayerMove2>(); Player2Kill = 0; }
     }
 
 
@@ -140,17 +149,19 @@ public class ObjDestroy : MonoBehaviour {
         {
             player2Kill += 1;
             audioSource.PlayOneShot(sound);
-            rpr.GetComponent<risporn>().ris_p = true;
+            //rpr.GetComponent<risporn>().ris_p = true;
             p_damage._HITCHECK = true;
             p_damage.ARFA = 1f;
+            _pm1.DESCHECK1 = true;
         }
         if (other.gameObject.name == "bullet(Clone)" && this.tag == "Player2")
         {
             player1Kill += 1;
             audioSource.PlayOneShot(sound);
-            rpr.GetComponent<risporn>().ris_p = true;
+            //rpr.GetComponent<risporn>().ris_p = true;
             p_damage._HITCHECK = true;
             p_damage.ARFA = 1f;
+            _pm2.DESCHECK2 = true;
         }
 
     }

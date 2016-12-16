@@ -30,7 +30,10 @@ public class imageScale : MonoBehaviour {
 
         //this.transform.localScale = panelScale;
 
-        panel = new Vector2(0.08030073f, 2.023478f);
+        //panel = new Vector2(0.08030073f, 2.023478f);
+        panel = new Vector2(0.1065725f, 1.628722f);
+
+
         this.transform.localScale = new Vector3(panel.x, panel.y, 1);
 
 

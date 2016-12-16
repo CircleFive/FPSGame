@@ -87,9 +87,10 @@ public class mapChenge : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+
         if (SceneManager.GetActiveScene().name != "Game") return;
-        //if (Input.GetKey(KeyCode.Q) || (Input.GetButton("L2button_1"))) m_t(p_name1);
-        if (Input.GetKey(KeyCode.Q) || (Input.GetAxis("L2button_1")) <  0.0f) m_t(p_name1);
+        //if (Input.GetKey(KeyCode.Q) || (Input.GetButton("L2button_1_1"))) m_t(p_name1);
+        if (Input.GetKey(KeyCode.Q) || (Input.GetAxis("L2button_1")) < 0.0f || (Input.GetButton("L2button_1_1"))) m_t(p_name1);
         else m_f(p_name1);
         if (Input.GetKey(KeyCode.B) || (Input.GetButton("L2button_2"))) m_t(p_name2);
         else m_f(p_name2);

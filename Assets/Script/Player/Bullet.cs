@@ -98,15 +98,14 @@ public class Bullet : MonoBehaviour {
         gun_num = BULLET;                      // 銃弾装填.
     }
 
-    //void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.tag == "Player2")
-    //    {
-    //        Debug.Log("Player2Death");
-    //        kk.p2Death();
-    //        Destroy(other.gameObject);
-    //    }
-
-    //}
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player2")
+        {
+            Debug.Log("Player2Death");
+            kk.p2Death();
+            Destroy(other.gameObject);
+        }
+    }
 
 }

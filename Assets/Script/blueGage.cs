@@ -35,10 +35,12 @@ public class blueGage : MonoBehaviour
     private bool E_Chenge = true;
 
     Bullet _B;
+    private PlayerMove _pm;
 
     void Start()
     {
         _B = p.GetComponent<Bullet>();
+        _pm = p.GetComponent<PlayerMove>();
         objEffect = max_Effect;
         objEffect.transform.GetComponent<Image>().color = new Color(1, 1, 1, 1);
     }
@@ -207,10 +209,14 @@ public class blueGage : MonoBehaviour
         //    bullet_UI();
 
         //}
-        if (Input.GetButtonDown("Fire1_1") && b_Bullet > 0)
-        {
-            bullet_UI();
 
+        if (!_pm.DESCHECK1)
+        {
+            if (Input.GetButtonDown("Fire1_1") || Input.GetButtonDown("Fire1_1_1") && b_Bullet > 0)
+            {
+                bullet_UI();
+
+            }
         }
 
 

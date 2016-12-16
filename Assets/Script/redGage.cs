@@ -38,10 +38,12 @@ public class redGage : MonoBehaviour
 
 
     Bullet2 _B;
+    private PlayerMove2 _pm;
 
     void Start()
     {
         _B = p.GetComponent<Bullet2>();
+        _pm = p.GetComponent<PlayerMove2>();
         objEffect = max_Effect;
         objEffect.transform.GetComponent<Image>().color = new Color(1, 1, 1, 1);
     }
@@ -219,13 +221,15 @@ public class redGage : MonoBehaviour
         }
 
 
-
-        if (Input.GetButtonDown("Fire1_2") && r_Bullet > 0)
+        if (!_pm.DESCHECK2)
         {
-            bullet_UI();
 
+            if (Input.GetButtonDown("Fire1_2") && r_Bullet > 0)
+            {
+                bullet_UI();
+
+            }
         }
-
 
     }
     void EffectFlash()

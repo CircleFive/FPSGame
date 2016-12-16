@@ -31,7 +31,9 @@ public class MinimapCamera : MonoBehaviour
     RectTransform rectTransform;
     private const float _height = 100f;
     private GameObject icon;
-    
+    private Camera m_map;
+
+
     // Icon
     private GameObject nearObj;      //最も近いオブジェクト
     private float searchTime = 0;      //経過時間
@@ -50,7 +52,7 @@ public class MinimapCamera : MonoBehaviour
         panel = GameObject.Find("Panel");
         rectTransform = panel.GetComponent<RectTransform>();
         icon = GameObject.Find("Icon");
-
+        m_map = this.GetComponent<Camera>();
         //最も近かったオブジェクトを取得
         //nearObj = serchTag(target, "Cube");
         //nearObj = serchTag(target, "BigCube");
@@ -83,7 +85,24 @@ public class MinimapCamera : MonoBehaviour
         //}
 
         List<GameObject> gameObjects = GetAllChildGameObjects(icon);
+        mapChenge();
 
+    }
+
+    void mapChenge()
+    {
+        if(target.transform.position.y < 1.675f)
+        {
+            //m_map.cullingMask = 18;
+            m_map.cullingMask |= 1 << LayerMask.NameToLayer("Ground");
+            m_map.cullingMask |= 1 << LayerMask.NameToLayer("F1");
+            m_map.cullingMask |= 1 << LayerMask.NameToLayer("W");
+            m_map.cullingMask |= 1 << LayerMask.NameToLayer("player1");
+        }
+        else
+        {
+            //m_map.cullingMask = 17;
+        }
     }
 
     void Clamp()
@@ -207,55 +226,55 @@ public class MinimapCamera : MonoBehaviour
         }
     }
 */
-//指定されたタグの中で最も近いものを取得
-GameObject serchDirection(GameObject nowObj, string tagName)
-    {
-        float tmpDis = 0;           //距離用一時変数
-        float nearDis = 0;          //最も近いオブジェクトの距離
-        //string nearObjName = "";    //オブジェクト名称
-        GameObject targetObj = null; //オブジェクト
+////指定されたタグの中で最も近いものを取得
+//GameObject serchDirection(GameObject nowObj, string tagName)
+//    {
+//        float tmpDis = 0;           //距離用一時変数
+//        float nearDis = 0;          //最も近いオブジェクトの距離
+//        //string nearObjName = "";    //オブジェクト名称
+//        GameObject targetObj = null; //オブジェクト
 
-        if (tagName == "Cube")
-        {
-            //タグ指定されたオブジェクトを配列で取得する
-            foreach (GameObject obs in GameObject.FindGameObjectsWithTag(tagName))
-            {
+//        if (tagName == "Cube")
+//        {
+//            //タグ指定されたオブジェクトを配列で取得する
+//            foreach (GameObject obs in GameObject.FindGameObjectsWithTag(tagName))
+//            {
 
-                //自身と取得したオブジェクトの距離を取得
-                tmpDis = Vector3.Distance(obs.transform.position, nowObj.transform.position);
+//                //自身と取得したオブジェクトの距離を取得
+//                tmpDis = Vector3.Distance(obs.transform.position, nowObj.transform.position);
 
-                //オブジェクトの距離が近いか、距離0であればオブジェクト名を取得
-                //一時変数に距離を格納
-                if (nearDis == 0 || nearDis > tmpDis)
-                {
-                    nearDis = tmpDis;
-                    //nearObjName = obs.name;
-                    targetObj = obs;
-                }
+//                //オブジェクトの距離が近いか、距離0であればオブジェクト名を取得
+//                //一時変数に距離を格納
+//                if (nearDis == 0 || nearDis > tmpDis)
+//                {
+//                    nearDis = tmpDis;
+//                    //nearObjName = obs.name;
+//                    targetObj = obs;
+//                }
 
-            }
-        }
-        else
-        {
-            //タグ指定されたオブジェクトを配列で取得する
-            GameObject obs = GameObject.Find(tagName);
+//            }
+//        }
+//        else
+//        {
+//            //タグ指定されたオブジェクトを配列で取得する
+//            GameObject obs = GameObject.Find(tagName);
 
-            //自身と取得したオブジェクトの距離を取得
-            tmpDis = Vector3.Distance(obs.transform.position, nowObj.transform.position);
+//            //自身と取得したオブジェクトの距離を取得
+//            tmpDis = Vector3.Distance(obs.transform.position, nowObj.transform.position);
 
-            //オブジェクトの距離が近いか、距離0であればオブジェクト名を取得
-            //一時変数に距離を格納
-            if (nearDis == 0 || nearDis > tmpDis)
-            {
-                nearDis = tmpDis;
-                //nearObjName = obs.name;
-                targetObj = obs;
-            }
-        }
-        //最も近かったオブジェクトを返す
-        //return GameObject.Find(nearObjName);
-        return targetObj;
-    }
+//            //オブジェクトの距離が近いか、距離0であればオブジェクト名を取得
+//            //一時変数に距離を格納
+//            if (nearDis == 0 || nearDis > tmpDis)
+//            {
+//                nearDis = tmpDis;
+//                //nearObjName = obs.name;
+//                targetObj = obs;
+//            }
+//        }
+//        //最も近かったオブジェクトを返す
+//        //return GameObject.Find(nearObjName);
+//        return targetObj;
+//    }
 
 
 
