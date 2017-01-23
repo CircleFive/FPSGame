@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerMove : MonoBehaviour {
+public class PlayerMove : MonoBehaviour
+{
 
     public float m_moveSpead;
     public float m_jumpPower;
-    private float m_rotationSpead = 360.0f;
+    private float m_rotationSpead = 180.0f;
 
     private Vector3 m_move = Vector3.zero;
 
@@ -34,11 +35,17 @@ public class PlayerMove : MonoBehaviour {
     [SerializeField]
     private float cameraRotateLimit;
     [SerializeField]
-    private bool cameraRotForward;//マウスを上で上を向く場合はtrue,マウスを上で下を向く場合はfalse
+    private bool cameraRotForward;                    //マウスを上で上を向く場合はtrue,マウスを上で下を向く場合はfalse
 
     private Quaternion initCameraRot;
-
+    [SerializeField]
     private Transform m_camera;
+    [SerializeField]
+    private Transform m_camera2;
+    [SerializeField]
+    private Transform m_gun;
+    [SerializeField]
+    private Transform m_spine;                        //プレイヤーの背のボーン指定
 
     private float x;
     private float y;
@@ -66,15 +73,35 @@ public class PlayerMove : MonoBehaviour {
         set { risbool = value; }
     }
 
+    // true : 立ち ,  false : しゃがみ
+    private bool stateBool = true;
+
+    private bool noHit = false;
+    public bool NOHIT
+    {
+        get { return noHit; }
+        set { noHit = value; }
+    }
+
+    private bool crouchTop;
+    public bool CROUCHTOP
+    {
+        get { return crouchTop; }
+        set { crouchTop = value; }
+
+    }
+
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
-       
+
         m_camera = GetComponentInChildren<Camera>().transform;
+        m_camera2 = GetComponentInChildren<Camera>().transform;
         m_characterController = GetComponent<CharacterController>();
         this.m_animator = GetComponentInChildren<Animator>();
-        initCameraRot = m_camera.rotation;
+        //initCameraRot = m_camera2.rotation;
+        initCameraRot = new Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
         j_posDown = this.gameObject.GetComponent<Rigidbody>();
         animState = m_animator.GetCurrentAnimatorStateInfo(0);
         this._statedeath = Animator.StringToHash("Base Layer.death");
@@ -87,13 +114,16 @@ public class PlayerMove : MonoBehaviour {
         m_characterController.enabled = true;
         M_ANIMATOR.SetBool("death", DESCHECK1);
         M_ANIMATOR.SetBool("Idel", true);
+        yield return new WaitForSeconds(3.0f);
+        NOHIT = false;
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
-        thisAnim = this.m_animator.GetCurrentAnimatorStateInfo(0);
+        Debug.Log(CROUCHTOP);
 
+        thisAnim = this.m_animator.GetCurrentAnimatorStateInfo(0);
         if (DESCHECK1)
         {
             risTime += Time.deltaTime;
@@ -116,12 +146,40 @@ public class PlayerMove : MonoBehaviour {
         }
         if (!DESCHECK1)
         {
-            Move();
+            if (Input.GetButton("R2button_1"))
+            {
+                CrouchState();
+                m_animator.SetBool("State", false);
+            }
+            else
+            {
+                if (crouchTop == false)
+                {
 
+                    StandState();
+                    m_animator.SetBool("State", true);
+                }
+            }
+            Move();
             Direction();
         }
     }
-    
+
+    private void CrouchState()
+    {
+        if (stateBool == false) return;
+        m_characterController.center = new Vector3(0, 0.65f, 0);
+        m_characterController.height = 1.2f;
+        stateBool = false;
+    }
+    private void StandState()
+    {
+        if (stateBool == true) return;
+            m_characterController.center = new Vector3(0, 1.0f, 0);
+            m_characterController.height = 2.0f;
+            stateBool = true;
+    }
+
     private void StandAnim()
     {
         if (x >= 0.1f && x <= -0.1f && z >= 0.1f && z <= -0.1f)
@@ -212,8 +270,8 @@ public class PlayerMove : MonoBehaviour {
     {
         //移動処理
         y = m_move.y;
-        //m_move = new Vector3(Input.GetAxis("Horizontal1"), 0, Input.GetAxis("Vertical1"));
-        m_move = new Vector3(Input.GetAxis("Horizontal1_1"), 0, Input.GetAxis("Vertical1_1"));
+        m_move = new Vector3(Input.GetAxis("Horizontal1"), 0, Input.GetAxis("Vertical1"));
+        // m_move = new Vector3(Input.GetAxis("Horizontal1_1"), 0, Input.GetAxis("Vertical1_1"));
         x = m_move.x;
         z = m_move.z;
         m_move.y += y;
@@ -237,13 +295,13 @@ public class PlayerMove : MonoBehaviour {
             //if (animState.nameHash == Animator.StringToHash("Base Layer.jumpDown"))
             //    m_animator.SetTrigger("jumpDown1");
             if (m_move.y != 0)
-            m_move.y = 0f;
+                m_move.y = 0f;
             if (Input.GetButtonDown("button3_1"))
             {
                 //m_animator.SetTrigger("jumpUp1");
                 m_animator.SetBool(animName, false);
                 jAnimbool = true;
-                m_animator.SetBool("jumpUp" , true);
+                m_animator.SetBool("jumpUp", true);
                 m_move.y = m_jumpPower;
             }
         }
@@ -257,8 +315,12 @@ public class PlayerMove : MonoBehaviour {
         if (!jAnimbool)
             StandAnim();
 
-
-        m_characterController.Move(m_move* (Time.deltaTime * m_speed));
+        // 立ち状態の場合
+        if (stateBool == true)
+            m_characterController.Move(m_move * (Time.deltaTime * m_speed));
+        // しゃがみ状態の場合
+        else
+            m_characterController.Move((m_move * (Time.deltaTime * m_speed)) / 1.8f);
         //m_animator.SetFloat("Speed", m_characterController.velocity.magnitude);
 
     }
@@ -266,8 +328,8 @@ public class PlayerMove : MonoBehaviour {
     private void Direction()
     {
         //左右方向転換
-        //Vector3 m_playerDirection = new Vector3(Input.GetAxis("Mouse X1") * 10, 0.0f, 0.0f);
-        Vector3 m_playerDirection = new Vector3(Input.GetAxis("Mouse X1_1") * 10, 0.0f, 0.0f);
+        Vector3 m_playerDirection = new Vector3(Input.GetAxisRaw("Mouse X1") * 10, 0.0f, 0.0f);
+        //Vector3 m_playerDirection = new Vector3(Input.GetAxis("Mouse X1_1") * 10, 0.0f, 0.0f);
         m_playerDirection = transform.TransformDirection(m_playerDirection);
         if (m_playerDirection.magnitude > 0.1f)
         {
@@ -276,19 +338,29 @@ public class PlayerMove : MonoBehaviour {
         }
 
         //上下への視点移動
-        //float xRotate = Input.GetAxis("Mouse Y1");
-        float xRotate = Input.GetAxis("Mouse Y1_1");
+        float xRotate = Input.GetAxis("Mouse Y1");
+        //float xRotate = Input.GetAxis("Mouse Y1_1");
         if (cameraRotForward)
         {
             xRotate *= -1;
         }
         Quaternion cameraRotate = m_camera.rotation * Quaternion.Euler(xRotate * m_rotationSpead * Time.deltaTime, 0, 0);
 
+
+
         //カメラの角度が限界角度を超えてなければカメラの角度を更新する
         if (cameraRotateLimit > Quaternion.Angle(initCameraRot, Quaternion.Euler(cameraRotate.eulerAngles.x, 0, 0)))
         {
             m_camera.rotation = cameraRotate;
+            m_gun.rotation = cameraRotate;
         }
 
+    }
+
+    //Playerモデルの上半身の角度を変える
+    void LateUpdate()
+    {
+        if (!DESCHECK1)
+            m_spine.eulerAngles = new Vector3(m_camera.eulerAngles.x, m_spine.eulerAngles.y, 0);
     }
 }
