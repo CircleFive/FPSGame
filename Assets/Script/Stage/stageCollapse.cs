@@ -40,6 +40,23 @@ public class stageCollapse : MonoBehaviour
         foreach (Transform obj in child)
         {
 
+            //if (time > 1 && time < 3)
+            //{
+
+            //    if (collapseHeraldFlg == true)
+            //    {
+            //        pos = new Vector3(pos.x - 2.3f * Time.deltaTime, 0, 0);
+            //        collapseHeraldFlg = false;
+            //    }
+            //    else
+            //    {
+            //        pos = new Vector3(pos.x + 2.3f * Time.deltaTime, 0, 0);
+            //        collapseHeraldFlg = true;
+            //    }
+            //    this.transform.position = pos;
+
+            //}
+
             if(obj == null)
             {
                 continue;

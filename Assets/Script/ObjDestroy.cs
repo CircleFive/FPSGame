@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ObjDestroy : MonoBehaviour {
 
@@ -61,9 +62,22 @@ public class ObjDestroy : MonoBehaviour {
     private PlayerMove _pm1;
     private PlayerMove2 _pm2;
 
+    private GameObject _killdeath1;
+    private GameObject _killdeath2;
+
+
+    private mask_KillDeath m1;
+    private mask_KillDeath m2;
+
 
     void Start()
     {
+        _killdeath1 = GameObject.Find("KILLDEATH1");
+        _killdeath2 = GameObject.Find("KILLDEATH2");
+
+        m1 = _killdeath1.GetComponent<mask_KillDeath>();
+        m2 = _killdeath2.GetComponent<mask_KillDeath>();
+
         audioSource = gameObject.GetComponent<AudioSource>();
         audioSource.loop = false;
         rpr = this.GetComponent<risporn>();
@@ -145,6 +159,10 @@ public class ObjDestroy : MonoBehaviour {
         {
             if (!_pm1.NOHIT)
             {
+                m1.arfa = 1.5f;
+                m2.arfa = 1.5f;
+                _killdeath1.GetComponent<Image>().sprite = Resources.Load<Sprite>("Image/deleted");
+                _killdeath2.GetComponent<Image>().sprite = Resources.Load<Sprite>("Image/kill");
                 player2Kill += 1;
                 audioSource.PlayOneShot(sound);
                 //rpr.GetComponent<risporn>().ris_p = true;
@@ -158,6 +176,10 @@ public class ObjDestroy : MonoBehaviour {
         {
             if (!_pm2.NOHIT)
             {
+                m1.arfa = 1.5f;
+                m2.arfa = 1.5f;
+                _killdeath1.GetComponent<Image>().sprite = Resources.Load<Sprite>("Image/kill");
+                _killdeath2.GetComponent<Image>().sprite = Resources.Load<Sprite>("Image/deleted");
                 player1Kill += 1;
                 audioSource.PlayOneShot(sound);
                 //rpr.GetComponent<risporn>().ris_p = true;

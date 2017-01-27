@@ -10,7 +10,7 @@ public class ChangeAnimation : MonoBehaviour {
 
     public void ChangeRunForward()
     { 
-        status = AnimationState.AnimeType.RunF;
+        status = AnimationState.AnimeType.Run_F;
         animator.Play(status);
     }
 

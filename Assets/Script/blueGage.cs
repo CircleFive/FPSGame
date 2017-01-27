@@ -81,7 +81,6 @@ public class blueGage : MonoBehaviour
         maxValue = rt5.sizeDelta.y;
     }
 
-
     private void UpdateValue(float t)
     {
         //float y5 = Mathf.Lerp(maxValue, 0f, t);
@@ -128,47 +127,37 @@ public class blueGage : MonoBehaviour
     void bullet_UI()
     {
         b_number = b_Bullet;
-
-
         _B.Shot(b_Bullet);
 
         if (b_Bullet == 5)
         {
             //c_time[5] = 1f;
-            c_time[5] = 0f;
             //rt5.sizeDelta = new Vector2(rt5.sizeDelta.x, 0);
+			c_time[5] = 0f;
             rt5.sizeDelta = new Vector2(1, rt5.sizeDelta.y);
         }
         else if (b_Bullet == 4)
         {
             c_time[b_Bullet] = c_time[b_Bullet + 1];
-            //c_time[b_Bullet + 1] = 1f;
             c_time[b_Bullet + 1] = 0f;
-            //rt5.sizeDelta = new Vector2(rt5.sizeDelta.x, 0);
             rt5.sizeDelta = new Vector2(1, rt5.sizeDelta.y);
         }
         else if (b_Bullet == 3)
         {
-            c_time[b_Bullet] = c_time[b_Bullet + 1];
-            //c_time[b_Bullet + 1] = 1f;
+            c_time[b_Bullet] = c_time[b_Bullet + 1];           
             c_time[b_Bullet + 1] = 0f;
-            //rt4.sizeDelta = new Vector2(rt4.sizeDelta.x, 0);
             rt4.sizeDelta = new Vector2(1, rt4.sizeDelta.y);
         }
         else if (b_Bullet == 2)
         {
-            c_time[b_Bullet] = c_time[b_Bullet + 1];
-            //c_time[b_Bullet + 1] = 1f;
+            c_time[b_Bullet] = c_time[b_Bullet + 1];           
             c_time[b_Bullet + 1] = 0f;
-            //rt3.sizeDelta = new Vector2(rt3.sizeDelta.x, 0);
             rt3.sizeDelta = new Vector2(1, rt3.sizeDelta.y);
         }
         else if (b_Bullet == 1)
         {
             c_time[b_Bullet] = c_time[b_Bullet + 1];
-            //c_time[b_Bullet + 1] = 1f;
             c_time[b_Bullet + 1] = 0f;
-            //rt2.sizeDelta = new Vector2(rt2.sizeDelta.x, 0);
             rt2.sizeDelta = new Vector2(1, rt2.sizeDelta.y);
         }
         b_Bullet--;
@@ -185,14 +174,13 @@ public class blueGage : MonoBehaviour
 
         UpdateValue(c_time[b_number]);
 
-
         if (c_time[b_number] >= 1f && b_Bullet < 5)
         {
             b_Bullet++;
             if (b_number != 5) b_number++;
         }
 
-        if(b_Bullet == 5)
+        if (b_Bullet == 5)
         {
             EffectON();
             EffectFlash();
@@ -202,34 +190,16 @@ public class blueGage : MonoBehaviour
         {
             EffectOFF();
         }
-
-        // L2
-        //if (Input.GetButtonDown("L2button_1") && b_Bullet > 0)
-        //{
-        //    bullet_UI();
-
-        //}
-
+        
         if (!_pm.DESCHECK1)
         {
-            if (Input.GetButtonDown("Fire1_1") || Input.GetButtonDown("Fire1_1_1") && b_Bullet > 0)
+            if (Input.GetButtonDown("Fire1_1") && b_Bullet > 0)
             {
                 bullet_UI();
-
             }
         }
 
-
     }
-    //IEnumerator EffectFlash()
-    //{
-    //    objEffect.SetActive(true);
-    //    yield return new WaitForSeconds(1.0f);
-    //    objEffect.SetActive(false);
-    //    yield return new WaitForSeconds(1.0f);
-    //    objEffect.SetActive(true);
-    //}
-
 
     void EffectFlash()
     {
@@ -238,7 +208,7 @@ public class blueGage : MonoBehaviour
         {
             E_Chenge = true;
         }
-        else if(objEffect.transform.GetComponent<Image>().color.a >= 255 / 255)
+        else if (objEffect.transform.GetComponent<Image>().color.a >= 255 / 255)
         {
             E_Chenge = false;
         }
@@ -249,7 +219,6 @@ public class blueGage : MonoBehaviour
         }
         else
         {
-
             objEffect.transform.GetComponent<Image>().color -= new Color(0, 0, 0, Time.deltaTime / 2);
         }
     }

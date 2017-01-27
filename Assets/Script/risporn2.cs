@@ -108,7 +108,7 @@
 //        posX = rispornX[nomber];
 //        posZ = rispornZ[nomber];
 
-
+//        Debug.Log("aaaaaaaa");
 //        if (risTime())
 //        {
 //            // 修正　y軸
@@ -135,7 +135,7 @@
 //    {
 //        bool r = false;
 //        r_time += Time.deltaTime;
-
+//        Debug.Log("aa");
 
 //        if (r_time >= 0.1 && risOr == true)
 //        {

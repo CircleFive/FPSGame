@@ -6,7 +6,7 @@ public class AnimationState : MonoBehaviour{
     public enum AnimeType
     {
         Idle = 0,
-        RunF,
+        Run_F,
         Run_B,
         Run_L,
         Run_R,

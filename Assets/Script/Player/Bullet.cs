@@ -31,6 +31,10 @@ public class Bullet : MonoBehaviour {
 
     //private int bulletNumber = 3;
 
+
+    [SerializeField]
+    private GameObject p_camera;
+
     // Use this for initialization
     void Start()
     {
@@ -64,9 +68,9 @@ public class Bullet : MonoBehaviour {
         if (bb == 0) { return; }
         GameObject bullets = GameObject.Instantiate(bullet) as GameObject;
         bullets.transform.position = m_muzzle.position;
-        bullets.transform.rotation = m_muzzle.rotation;
+        bullets.transform.rotation = p_camera.transform.rotation;
         Vector3 m_force;
-        m_force = this.gameObject.transform.forward * m_speed;
+        m_force = bullets.transform.forward * m_speed;
         bullets.GetComponent<Rigidbody>().AddForce(m_force);
         audioSource.PlayOneShot(sound);
         //gun_num--;

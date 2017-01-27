@@ -4,8 +4,8 @@ using System.Collections;
 public class PlayerMove : MonoBehaviour
 {
 
-    public float m_moveSpead;
-    public float m_jumpPower;
+    private float m_moveSpead = 5.0f;
+    private float m_jumpPower = 1.5f;
     private float m_rotationSpead = 180.0f;
 
     private Vector3 m_move = Vector3.zero;
@@ -38,12 +38,13 @@ public class PlayerMove : MonoBehaviour
     private bool cameraRotForward;                    //マウスを上で上を向く場合はtrue,マウスを上で下を向く場合はfalse
 
     private Quaternion initCameraRot;
+
     [SerializeField]
     private Transform m_camera;
     [SerializeField]
-    private Transform m_camera2;
-    [SerializeField]
     private Transform m_gun;
+    [SerializeField]
+    private Transform m_gun2;
     [SerializeField]
     private Transform m_spine;                        //プレイヤーの背のボーン指定
 
@@ -95,12 +96,10 @@ public class PlayerMove : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
         m_camera = GetComponentInChildren<Camera>().transform;
-        m_camera2 = GetComponentInChildren<Camera>().transform;
         m_characterController = GetComponent<CharacterController>();
         this.m_animator = GetComponentInChildren<Animator>();
-        //initCameraRot = m_camera2.rotation;
+        //initCameraRot = m_camera.rotation;
         initCameraRot = new Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
         j_posDown = this.gameObject.GetComponent<Rigidbody>();
         animState = m_animator.GetCurrentAnimatorStateInfo(0);
@@ -121,8 +120,6 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(CROUCHTOP);
-
         thisAnim = this.m_animator.GetCurrentAnimatorStateInfo(0);
         if (DESCHECK1)
         {
@@ -153,12 +150,8 @@ public class PlayerMove : MonoBehaviour
             }
             else
             {
-                if (crouchTop == false)
-                {
-
-                    StandState();
-                    m_animator.SetBool("State", true);
-                }
+                StandState();
+                m_animator.SetBool("State", true);
             }
             Move();
             Direction();
@@ -175,9 +168,9 @@ public class PlayerMove : MonoBehaviour
     private void StandState()
     {
         if (stateBool == true) return;
-            m_characterController.center = new Vector3(0, 1.0f, 0);
-            m_characterController.height = 2.0f;
-            stateBool = true;
+        m_characterController.center = new Vector3(0, 1.0f, 0);
+        m_characterController.height = 2.0f;
+        stateBool = true;
     }
 
     private void StandAnim()
@@ -346,13 +339,13 @@ public class PlayerMove : MonoBehaviour
         }
         Quaternion cameraRotate = m_camera.rotation * Quaternion.Euler(xRotate * m_rotationSpead * Time.deltaTime, 0, 0);
 
-
-
         //カメラの角度が限界角度を超えてなければカメラの角度を更新する
         if (cameraRotateLimit > Quaternion.Angle(initCameraRot, Quaternion.Euler(cameraRotate.eulerAngles.x, 0, 0)))
         {
             m_camera.rotation = cameraRotate;
+            //m_camera.rotation = new Quaternion(cameraRotate.x, m_camera.rotation.y, m_camera.rotation.z, cameraRotate.z);
             m_gun.rotation = cameraRotate;
+            m_gun2.rotation = cameraRotate;
         }
 
     }

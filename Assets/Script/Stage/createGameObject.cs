@@ -4,19 +4,22 @@ using System.Collections;
 public class createGameObject : MonoBehaviour {
 
     private GameObject cubes;
+    //private GameObject cube;
+    //private GameObject bigCube;
     private GameObject clystal;
     private GameObject bigClystal;
 
     Vector3 pos;
 
     // y軸は同一
-    float yy = 1.0f;
+    float yy = 0.5f;
 
     // 出現位置
     float xx;
     float zz;
 
     // 同じ位置に出現させないための配列
+    //int[] memory = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     int[] memory = { 0, 0, 0, 0, 0, 0, 0 };
     // 出現カウント
     int cubeCnt = 0;
@@ -26,6 +29,8 @@ public class createGameObject : MonoBehaviour {
     /// for文で回してxPoint[0]とzPoint[0]が対になってます.(他も同様) 
     /// 
     /// </summary>
+    //float[] xPoint = {5,10,-5,-10,15,-15,20,-20,25,-25,30,-30,35,-35,40 };
+    //float[] zPoint = {5,10,-5,-10,15,-15,20,-20,25,-25,30,-30,35,-35,40 };
     float[] xPoint = { -2.6f,  4.2f, 3.6f,    0, -3.6f,    -4, 2.6f};
     float[] yPoint = {  0.5f,  1.5f, 1.5f, 0.5f,  1.5f,  1.5f, 0.5f };
     float[] zPoint = {  3.6f, 4.05f, 1.5f,    0, -1.5f, -4.1f, -3.6f};
@@ -45,6 +50,8 @@ public class createGameObject : MonoBehaviour {
 
     void Start () {
         cubes = GameObject.Find("CreateStage");
+        //cube = (GameObject)Resources.Load("Prefabs/Cube");
+        //bigCube = (GameObject)Resources.Load("Prefabs/BigCube");
         clystal = (GameObject)Resources.Load("Prefabs/Clystal");
         bigClystal = (GameObject)Resources.Load("Prefabs/BigClystal");
     }
@@ -98,13 +105,45 @@ public class createGameObject : MonoBehaviour {
                             xx = xPoint[ran];
                             zz = zPoint[ran];
                             break;
+                        //case 7:
+                        //    xx = xPoint[ran];
+                        //    zz = zPoint[ran];
+                        //    break;
+                        //case 8:
+                        //    xx = xPoint[ran];
+                        //    zz = zPoint[ran];
+                        //    break;
+                        //case 9:
+                        //    xx = xPoint[ran];
+                        //    zz = zPoint[ran];
+                        //    break;
+                        //case 10:
+                        //    xx = xPoint[ran];
+                        //    zz = zPoint[ran];
+                        //    break;
+                        //case 11:
+                        //    xx = xPoint[ran];
+                        //    zz = zPoint[ran];
+                        //    break;
+                        //case 12:
+                        //    xx = xPoint[ran];
+                        //    zz = zPoint[ran];
+                        //    break;
+                        //case 13:
+                        //    xx = xPoint[ran];
+                        //    zz = zPoint[ran];
+                        //    break;
+                        //case 14:
+                        //    xx = xPoint[ran];
+                        //    zz = zPoint[ran];
+                        //    break;
 
                     }
                     Vector3 asd = gameObject.transform.position;
                     pos = new Vector3(xx, yy, zz);
                     GameObject obj = (GameObject)Instantiate(clystal, pos, transform.rotation);
                     obj.transform.parent = cubes.transform;
-                    //obj.AddComponent<BoxCollider>();
+                    obj.AddComponent<BoxCollider>();
                     if (j == 2 + cubeRevenge)
                     {
                         cubeOn = true;
@@ -125,6 +164,7 @@ public class createGameObject : MonoBehaviour {
             cubeOn = false;
             GameObject obj = (GameObject)Instantiate(bigClystal, new Vector3(0, 1, 0), transform.rotation);
             obj.transform.parent = cubes.transform;
+            obj.AddComponent<BoxCollider>();
 
         }
     }
