@@ -92,6 +92,7 @@ public class PlayerMove : MonoBehaviour
 
     }
 
+    private bool _NoContllol = false;
 
     // Use this for initialization
     void Start()
@@ -116,6 +117,11 @@ public class PlayerMove : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
         NOHIT = false;
     }
+    private IEnumerator NoContllol()
+    {
+        yield return new WaitForSeconds(0.1f);
+        _NoContllol = false;
+    }
 
     // Update is called once per frame
     void Update()
@@ -138,6 +144,8 @@ public class PlayerMove : MonoBehaviour
                 //risbool = true;
                 RISBOOL = true;
                 DESCHECK1 = false;
+                _NoContllol = true;
+                StartCoroutine(NoContllol());
                 StartCoroutine(risWait());
             }
         }
@@ -187,49 +195,57 @@ public class PlayerMove : MonoBehaviour
 
         if (x > 0.1f && z > 0.1f) // 右上 
         {
-            m_animator.SetBool(animName, false);
+            if(animName != "UR")
+               m_animator.SetBool(animName, false);
             animName = "UR";
             m_animator.SetBool("UR", setanim);
         }
         else if (x < -0.1f && z > 0.1f) // 左上
         {
-            m_animator.SetBool(animName, false);
+            if (animName != "UL")
+                m_animator.SetBool(animName, false);
             animName = "UL";
             m_animator.SetBool("UL", setanim);
         }
         else if (x > 0.1f && z < -0.1f) // 右下
         {
-            m_animator.SetBool(animName, false);
+            if (animName != "DR")
+                m_animator.SetBool(animName, false);
             animName = "DR";
             m_animator.SetBool("DR", setanim);
         }
         else if (x < -0.1f && z < -0.1f) // 左下
         {
-            m_animator.SetBool(animName, false);
+            if (animName != "DL")
+                m_animator.SetBool(animName, false);
             animName = "DL";
             m_animator.SetBool("DL", setanim);
         }
         else if (x > 0.1f) //　右 
         {
-            m_animator.SetBool(animName, false);
+            if (animName != "R")
+                m_animator.SetBool(animName, false);
             animName = "R";
             m_animator.SetBool("R", setanim);
         }
         else if (x < -0.1f) // 左
         {
-            m_animator.SetBool(animName, false);
+            if (animName != "L")
+                m_animator.SetBool(animName, false);
             animName = "L";
             m_animator.SetBool("L", setanim);
         }
         else if (z > 0.1f) // 上
         {
-            m_animator.SetBool(animName, false);
+            if (animName != "U")
+                m_animator.SetBool(animName, false);
             animName = "U";
             m_animator.SetBool("U", setanim);
         }
         else if (z < -0.1f) // 下
         {
-            m_animator.SetBool(animName, false);
+            if (animName != "D")
+                m_animator.SetBool(animName, false);
             animName = "D";
             m_animator.SetBool("D", setanim);
         }
@@ -263,14 +279,17 @@ public class PlayerMove : MonoBehaviour
     {
         //移動処理
         y = m_move.y;
-        m_move = new Vector3(Input.GetAxis("Horizontal1"), 0, Input.GetAxis("Vertical1"));
+        if (!_NoContllol)
+        {
+            m_move = new Vector3(Input.GetAxis("Horizontal1"), 0, Input.GetAxis("Vertical1"));
         // m_move = new Vector3(Input.GetAxis("Horizontal1_1"), 0, Input.GetAxis("Vertical1_1"));
-        x = m_move.x;
-        z = m_move.z;
-        m_move.y += y;
+            x = m_move.x;
+            z = m_move.z;
 
-        m_move = transform.TransformDirection(m_move);
+            m_move.y += y;
 
+            m_move = transform.TransformDirection(m_move);
+        }
         //animState = m_animator.GetCurrentAnimatorStateInfo(0);
 
 
