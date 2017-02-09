@@ -91,6 +91,8 @@ public class PlayerMove2 : MonoBehaviour
 
     }
 
+    private bool _NoContllol = false;
+    private bool _jump = false;
 
     // Use this for initialization
     void Start()
@@ -115,6 +117,11 @@ public class PlayerMove2 : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
         NOHIT = false;
     }
+    private IEnumerator NoContllol()
+    {
+        yield return new WaitForSeconds(0.1f);
+        _NoContllol = false;
+    }
 
     // Update is called once per frame
     void Update()
@@ -137,6 +144,8 @@ public class PlayerMove2 : MonoBehaviour
                 //risbool = true;
                 RISBOOL = true;
                 DESCHECK2 = false;
+                _NoContllol = true;
+                StartCoroutine(NoContllol());
                 StartCoroutine(risWait());
             }
         }
@@ -149,8 +158,11 @@ public class PlayerMove2 : MonoBehaviour
             }
             else
             {
-                StandState();
-                m_animator.SetBool("State", true);
+                if (crouchTop == false)
+                {
+                    StandState();
+                    m_animator.SetBool("State", true);
+                }
             }
             Move();
             Direction();
@@ -263,14 +275,16 @@ public class PlayerMove2 : MonoBehaviour
     {
         //移動処理
         y = m_move.y;
-        m_move = new Vector3(Input.GetAxis("Horizontal2"), 0, Input.GetAxis("Vertical2"));
-        // m_move = new Vector3(Input.GetAxis("Horizontal2_2"), 0, Input.GetAxis("Vertical2_2"));
-        x = m_move.x;
-        z = m_move.z;
-        m_move.y += y;
+        if (!_NoContllol)
+        {
+            m_move = new Vector3(Input.GetAxis("Horizontal2"), 0, Input.GetAxis("Vertical2"));
+            // m_move = new Vector3(Input.GetAxis("Horizontal2_2"), 0, Input.GetAxis("Vertical2_2"));
+            x = m_move.x;
+            z = m_move.z;
+            m_move.y += y;
 
-        m_move = transform.TransformDirection(m_move);
-
+            m_move = transform.TransformDirection(m_move);
+        }
         //animState = m_animator.GetCurrentAnimatorStateInfo(0);
 
 

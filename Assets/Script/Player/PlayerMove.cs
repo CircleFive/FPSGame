@@ -94,6 +94,9 @@ public class PlayerMove : MonoBehaviour
 
     private bool _NoContllol = false;
 
+
+    private bool _jump = false;
+
     // Use this for initialization
     void Start()
     {
@@ -158,8 +161,11 @@ public class PlayerMove : MonoBehaviour
             }
             else
             {
-                StandState();
-                m_animator.SetBool("State", true);
+                if (crouchTop == false)
+                {
+                    StandState();
+                    m_animator.SetBool("State", true);
+                }
             }
             Move();
             Direction();
