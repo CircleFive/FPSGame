@@ -4,77 +4,137 @@ using System.Collections;
 public class FirstPersonCamera : MonoBehaviour {
 
     [SerializeField]
-    private GameObject m_mainCamera;
+    private Transform m_mainCamera;
     [SerializeField]
     private GameObject m_zoomOutPotision;
     [SerializeField]
     private Transform m_zoomInPotision;
 
     [SerializeField]
-    private Transform m_cameraPotision;     //目線用のカメラ
-    [SerializeField]
-    private GameObject m_gun;               //銃オブジェクト
-    [SerializeField]
-    private Transform m_rightArm;           //PlayerModelの右腕
-    [SerializeField]
-    private Transform m_rightShoulder;
-    [SerializeField]
-    private Transform m_leftArm;            //PlayerModelの左腕
-    [SerializeField]
-    private Transform m_leftShoulder;
+    private Transform m_cameraPotision;               //目線用のカメラ
+
 
     [SerializeField]
-    private Transform m_centerPotision;     
+    private float cameraRotateLimit;
+    [SerializeField]
+    private bool cameraRotForward;                    //マウスを上で上を向く場合はtrue,マウスを上で下を向く場合はfalse
+
+    private Quaternion initCameraRot;                 //カメラの角度の初期値
+    private float m_rotationSpead = 180.0f;
+    PlayerMove player;
+    [SerializeField]
+    private Transform m_gun;                          //銃オブジェクト
+    [SerializeField]
+    private Transform m_spine;                        //プレイヤーの背のボーン指定
+    //[SerializeField]
+    //private Transform m_rightHand;           //PlayerModelの右手
+    //[SerializeField]
+    //private Transform m_rightShoulder;
+    //[SerializeField]
+    //private Transform m_leftHand;            //PlayerModelの左手
+    //[SerializeField]
+    //private Transform m_leftShoulder;
 
     [SerializeField]
-    private GameObject m_reticle;
+    private Transform m_centerPotision;
+
+    //[SerializeField]
+    //private GameObject m_reticle;
 
 
     // Use this for initialization
     private void Start()
     {
-        
+        //m_reticle.SetActive(false);
+        player = GetComponent<PlayerMove>();
+        initCameraRot = new Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
     }
 	
 	// Update is called once per frame
 	void Update () {
         //常にMainCameraは目線のPotisionにセットされる
         m_mainCamera.transform.position = m_cameraPotision.position;
-
-        if (Input.GetButton("L1button_1"))
+        if (!player.DESCHECK1)
         {
+            Direction();
+        }
+        //if (Input.GetButton("L1button_1"))
+        //{
             
-            if (m_zoomInPotision.position.z > m_cameraPotision.position.z)
-            {
-                m_cameraPotision.position += m_cameraPotision.forward * 0.1f;
-                Debug.Log("Max");
-            }
+        //    if (m_zoomInPotision.position.z > m_cameraPotision.position.z)
+        //    {
+        //        m_cameraPotision.position += m_cameraPotision.forward * 0.1f;
+        //        m_reticle.SetActive(true);
+        //    }
 
+        //}
+
+        //if (Input.GetButtonUp("L1button_1"))
+        //{
+        //    m_cameraPotision.position = m_zoomOutPotision.transform.position;
+        //    m_reticle.SetActive(false);
+        //}
+
+       
+
+    }
+
+    private void Direction()
+    {
+        //左右方向転換
+        Vector3 m_playerDirection = new Vector3(Input.GetAxisRaw("Mouse X1") * 10, 0.0f, 0.0f);
+
+        m_playerDirection = player.transform.TransformDirection(m_playerDirection);
+
+        //右スティックを横に少し倒したときの感度
+        if (m_playerDirection.magnitude > 0.03f || m_playerDirection.magnitude < -0.03f)
+        {
+            Quaternion m_quaternion = Quaternion.LookRotation(m_playerDirection);
+            player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, m_quaternion, m_rotationSpead * Time.deltaTime / 2);
+        }
+        //右スティックを横に全開に倒したときの感度
+        if (m_playerDirection.magnitude > 5.1f || m_playerDirection.magnitude < -5.1f)
+        {
+            Quaternion m_quaternion = Quaternion.LookRotation(m_playerDirection);
+            player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, m_quaternion, m_rotationSpead * Time.deltaTime);
         }
 
-        if (Input.GetButtonUp("L1button_1"))
+        //上下への視点移動
+        float xRotate = Input.GetAxis("Mouse Y1");
+
+        if (cameraRotForward)
         {
-            m_cameraPotision.position = m_zoomOutPotision.transform.position;
+            xRotate *= -1;
         }
+        Quaternion cameraRotate = m_mainCamera.rotation * Quaternion.Euler(xRotate * m_rotationSpead * Time.deltaTime, 0, 0);
 
-        RaycastHit m_hit;
-
-        if (Physics.Raycast(m_cameraPotision.position, m_cameraPotision.forward,out m_hit))
+        //カメラの角度が限界角度を超えてなければカメラの角度を更新する
+        if (cameraRotateLimit > Quaternion.Angle(initCameraRot, Quaternion.Euler(cameraRotate.eulerAngles.x, 0, 0)))
         {
-            m_gun.transform.LookAt(m_hit.point);
+            m_mainCamera.rotation = cameraRotate;
+            m_gun.rotation = cameraRotate;
         }
 
     }
 
-
+    //Playerモデルの上半身の角度を変える
+    void LateUpdate()
+    {
+        if (!player.DESCHECK1)
+            m_spine.eulerAngles = new Vector3(m_mainCamera.eulerAngles.x, m_spine.eulerAngles.y, 0);
+    }
     //void LateUpdate()
     //{
-    //    m_leftArm.LookAt(m_centerPotision);
-    //    m_rightArm.LookAt(m_centerPotision);
-    //    m_rightShoulder.LookAt(m_centerPotision);
-    //    m_leftShoulder.LookAt(m_centerPotision);
 
-    //    m_gun.transform.LookAt(m_centerPotision);
+    //    //RaycastHit m_hit;
+
+    //    //if (Physics.Raycast(m_cameraPotision.position, m_cameraPotision.forward, out m_hit))
+    //    //{
+    //    //    m_gun.transform.LookAt(m_hit.transform.position);
+    //    //}
+
+    //     m_gun.transform.LookAt(m_centerPotision);
+
     //}
-    
+
 }

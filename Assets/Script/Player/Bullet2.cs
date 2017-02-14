@@ -16,7 +16,7 @@ public class Bullet2 : MonoBehaviour {
 
     private int gun_num;
 
-    public int BULLET = 5;
+    private int BULLET = 1;
 
     killDeath kk;
     redGage RG;
@@ -87,7 +87,7 @@ public class Bullet2 : MonoBehaviour {
         bullets.transform.position = m_muzzle.position;
         bullets.transform.rotation = m_muzzle.rotation;
         Vector3 m_force;
-        m_force = this.gameObject.transform.forward * m_speed;
+        m_force = bullets.transform.forward * m_speed;
         bullets.GetComponent<Rigidbody>().AddForce(m_force);
         audioSource.PlayOneShot(sound);
 
@@ -108,7 +108,7 @@ public class Bullet2 : MonoBehaviour {
     {
         if (other.tag == "Player1")
         {
-            Debug.Log("Player1Death");
+            //Debug.Log("Player1Death");
             kk.p1Death();
             Destroy(other.gameObject);
         }

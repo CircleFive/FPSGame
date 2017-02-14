@@ -90,6 +90,11 @@ public class CountStart : MonoBehaviour {
             if (_GAMESTATE == "GameSet")
                 StartCoroutine(GameSetToResult());
         }
+        else if (SceneManager.GetActiveScene().name == "Title")
+        {
+            Destroy(gameObject);
+        }
+
     }
 
     void mask_GO()

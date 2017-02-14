@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Reflection : MonoBehaviour {
 
-    [SerializeField]
-    private LineRenderer m_laser;
+   
+    LineRenderer m_laser;
     [SerializeField]
     private Transform m_setPosition;
     [SerializeField]
@@ -24,10 +24,9 @@ public class Reflection : MonoBehaviour {
 	void Update () {
         // m_laser.SetPosition(1, Vector3.Reflect(m_wall.position,Vector3.right));
 
-        if (Physics.Raycast(m_laserPosition.transform.position*-1, m_setPosition.transform.forward*-1, out m_hit))
+        if (Physics.Raycast(m_laserPosition.transform.position, m_setPosition.transform.forward, out m_hit))
         {
-            Debug.Log(m_hit.transform.gameObject.tag);
-            m_laser.SetPosition(1, m_hit.point*-1);
+            m_laser.SetPosition(1, m_hit.point);
         }
         else
         {

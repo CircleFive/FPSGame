@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ObjDestroy : MonoBehaviour {
 
@@ -57,13 +58,35 @@ public class ObjDestroy : MonoBehaviour {
     private damage p_damage;
 
 
+
+    private PlayerMove _pm1;
+    private PlayerMove2 _pm2;
+
+    private GameObject _killdeath1;
+    private GameObject _killdeath2;
+
+
+    private mask_KillDeath m1;
+    private mask_KillDeath m2;
+
+
     void Start()
     {
+        _killdeath1 = GameObject.Find("KILLDEATH1");
+        _killdeath2 = GameObject.Find("KILLDEATH2");
+
+        m1 = _killdeath1.GetComponent<mask_KillDeath>();
+        m2 = _killdeath2.GetComponent<mask_KillDeath>();
+
         audioSource = gameObject.GetComponent<AudioSource>();
         audioSource.loop = false;
         rpr = this.GetComponent<risporn>();
 
+
+
         p_damage = damageEfect.GetComponent<damage>();
+        if (this.name == "Player1") { _pm1 = this.gameObject.GetComponent<PlayerMove>(); Player1Kill = 0; }
+        if (this.name == "Player2") { _pm2 = this.gameObject.GetComponent<PlayerMove2>(); Player2Kill = 0; }
     }
 
 
@@ -91,69 +114,83 @@ public class ObjDestroy : MonoBehaviour {
 
 
 
-
-
-
-
     void OnTriggerEnter(Collider other)
     {
 
-        if (other.gameObject.name == "bullet(Clone)" && this.tag == "BigClystal")
-        {
+        //if (other.gameObject.name == "bullet(Clone)" && this.tag == "BigClystal")
+        //{
 
 
-            BigClystal--;
-            if (BigClystal == 0)
-            {
-                player1Point += 3;
-                Destroy(gameObject);
-            }
-        }
+        //    BigClystal--;
+        //    if (BigClystal == 0)
+        //    {
+        //        player1Point += 3;
+        //        Destroy(gameObject);
+        //    }
+        //}
 
-        if (other.gameObject.name == "bullet(Clone)" && this.tag == "Clystal")
-        {
+        //if (other.gameObject.name == "bullet(Clone)" && this.tag == "Clystal")
+        //{
 
-            player1Point += 1;
-            Destroy(gameObject);
-        }
+        //    player1Point += 1;
+        //    Destroy(gameObject);
+        //}
 
-        // プレイヤー2
-        if (other.gameObject.name == "bullet2(Clone)" && this.tag == "BigClystal")
-        {
+        //// プレイヤー2
+        //if (other.gameObject.name == "bullet2(Clone)" && this.tag == "BigClystal")
+        //{
 
-            BigClystal--;
-            if (BigClystal == 0)
-            {
-                player1Point += 3;
-                Destroy(gameObject);
-            }
-        }
+        //    BigClystal--;
+        //    if (BigClystal == 0)
+        //    {
+        //        player1Point += 3;
+        //        Destroy(gameObject);
+        //    }
+        //}
 
-        if (other.gameObject.name == "bullet2(Clone)" && this.tag == "Clystal")
-        {
-            player1Point += 1;
-            Destroy(gameObject);
-        }
+        //if (other.gameObject.name == "bullet2(Clone)" && this.tag == "Clystal")
+        //{
+        //    player1Point += 1;
+        //    Destroy(gameObject);
+        //}
 
         // playerのKill、Death
         if (other.gameObject.name == "bullet2(Clone)" && this.tag == "Player1")
         {
-            player2Kill += 1;
-            audioSource.PlayOneShot(sound);
-            rpr.GetComponent<risporn>().ris_p = true;
-            p_damage._HITCHECK = true;
-            p_damage.ARFA = 1f;
+            if (!_pm1.NOHIT)
+            {
+                m1.arfa = 1.5f;
+                m2.arfa = 1.5f;
+                _killdeath1.GetComponent<Image>().sprite = Resources.Load<Sprite>("Image/deleted");
+                _killdeath2.GetComponent<Image>().sprite = Resources.Load<Sprite>("Image/kill");
+                player2Kill += 1;
+                audioSource.PlayOneShot(sound);
+                //rpr.GetComponent<risporn>().ris_p = true;
+                p_damage._HITCHECK = true;
+                p_damage.ARFA = 1f;
+                _pm1.DESCHECK1 = true;
+                _pm1.NOHIT = true;
+            }
         }
         if (other.gameObject.name == "bullet(Clone)" && this.tag == "Player2")
         {
-            player1Kill += 1;
-            audioSource.PlayOneShot(sound);
-            rpr.GetComponent<risporn>().ris_p = true;
-            p_damage._HITCHECK = true;
-            p_damage.ARFA = 1f;
+            if (!_pm2.NOHIT)
+            {
+                m1.arfa = 1.5f;
+                m2.arfa = 1.5f;
+                _killdeath1.GetComponent<Image>().sprite = Resources.Load<Sprite>("Image/kill");
+                _killdeath2.GetComponent<Image>().sprite = Resources.Load<Sprite>("Image/deleted");
+                player1Kill += 1;
+                audioSource.PlayOneShot(sound);
+                //rpr.GetComponent<risporn>().ris_p = true;
+                p_damage._HITCHECK = true;
+                p_damage.ARFA = 1f;
+                _pm2.DESCHECK2 = true;
+                _pm2.NOHIT = true;
+            }
         }
-
     }
+
     public int p1_kill()
     {
         return player1Kill;

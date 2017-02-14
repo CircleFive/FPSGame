@@ -43,6 +43,7 @@ public class limitTime : MonoBehaviour {
     private GameObject Manager;
     private CountStart state;
 
+
     void limit()
     {
         p = C.GetComponent<ObjDestroy>();
@@ -55,6 +56,7 @@ public class limitTime : MonoBehaviour {
         DontDestroyOnLoad(this);
         state = Manager.GetComponent<CountStart>();
         //DontDestroyOnLoad(canvas);
+
     }
 
     // Update is called once per frame
@@ -101,15 +103,13 @@ public class limitTime : MonoBehaviour {
                 state._GAMESTATE = "GameSet";
                 if (state._GAMESTATE == "ToResult")
                 {
-                    Debug.Log("a");
                     SceneManager.LoadScene("result");
                 }
 
             }
         }
-        else if(SceneManager.GetActiveScene().name == "result")
+        else if (SceneManager.GetActiveScene().name == "result")
         {
-
         }
     }
 
